@@ -6,7 +6,8 @@ readLocalMove(Turn, Move) :-
     name(MoveReaded,MoveList),
     checkMove(Turn, MoveList, Move).
 
-checkMove(Turn, MoveList, Move) :- not(isMoveFormatValid(MoveList)), !,
+checkMove(Turn, MoveList, Move) :-
+    not(isMoveFormatValid(MoveList)), !,
     tty_clear,
     write('Formato de mensagem invalido!\n'),
     write('Informe a posição atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
