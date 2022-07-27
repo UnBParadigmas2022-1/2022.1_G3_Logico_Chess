@@ -10,19 +10,19 @@ main :-
 
 initGame(GameMode) :- 
     (GameMode == 2 ; GameMode == 4), !,
-    initSocketGame().
+    initSocketGame(GameMode).
 initGame(_) :- !.
 
 
 game(Turn, GameMode) :-
     prepareTurn(Turn, GameMode),
     readPlayerMove(Turn, Move),
-    format(user_output, 'Player[~d]: Jogou ', Turn+1), write(user_output, Move), write(user_output, '\n'), flush_output(),
+    format(user_output, 'Jogador[~d]: Jogou ', Turn+1), write(user_output, Move), write(user_output, '\n'), flush_output(),
     NextTurn is (Turn+1) mod 2,
     game(NextTurn, GameMode).
 
 
-prepareTurn(Turn, GameMode) :-
-    (GameMode == 2 ; GameMode == 4), !,
-    prepareSocketTurn(Turn).
+prepareTurn(Turn, 2) :- prepareSocketTurn(Turn).
+prepareTurn(0, 4) :- prepareSocketTurn(0).
+prepareTurn(1, 4) :- set_input(user_input), set_output(user_output). % Change this when computer gamemode is ready
 prepareTurn(_, _) :- !.

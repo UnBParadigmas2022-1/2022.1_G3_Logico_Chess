@@ -3,13 +3,14 @@
 :- dynamic(clients/4).
 
 
-initSocketGame :-
+initSocketGame(GameMode) :-
     write('\nInsira a porta do servidor:\n'),
     read(Port),
     createServer(Port, AcceptFd),
     acceptClient(AcceptFd, 0),
+    GameMode == 2, !,
     acceptClient(AcceptFd, 1).
-
+initSocketGame(_) :- !.
 
 prepareSocketTurn(Turn) :-
     clients(Turn, _, StreamIn, StreamOut),
