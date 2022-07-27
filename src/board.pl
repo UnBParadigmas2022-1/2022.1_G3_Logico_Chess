@@ -33,3 +33,11 @@ board(0, 0, rook, white). %% a1
 board(7, 0, rook, black). %% a8
 board(0, 7, rook, white). %% h1
 board(7, 7, rook, black). %% h8
+
+% Initial Queen
+board(3, 0, queen, white). %% d1
+board(3, 7, queen, black). %% d8
+
+% Initial King
+board(4, 0, king, white). %% e1
+board(4 ,7, king, black). %% e8
