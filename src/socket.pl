@@ -3,12 +3,27 @@
 :- dynamic(clients/4).
 
 
+initSocketGame :-
+    write('\nInsira a porta do servidor:\n'),
+    read(Port),
+    createServer(Port, AcceptFd),
+    acceptClient(AcceptFd, 0),
+    acceptClient(AcceptFd, 1).
+
+
+prepareSocketTurn(Turn) :-
+    clients(Turn, _, StreamIn, StreamOut),
+    set_input(StreamIn),
+    set_output(StreamOut).
+
+
 createServer(Port, AcceptFd) :- 
     tcp_socket(Socket),
     tcp_setopt(Socket, reuseaddr),
     tcp_bind(Socket, Port),
     tcp_listen(Socket, 2),
-    tcp_open_socket(Socket, AcceptFd, _).
+    tcp_open_socket(Socket, AcceptFd, _),
+    format('Aguardando jogadores na porta ~d\n', Port).
 
 
 acceptClient(AcceptFd, Turn) :-
