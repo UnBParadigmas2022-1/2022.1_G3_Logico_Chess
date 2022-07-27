@@ -1,4 +1,3 @@
-:- dynamic(menuOption/1).
 
 drawChar(_,Count) :- Count =< 0, !.
 drawChar(Char,Count) :-
@@ -9,13 +8,13 @@ drawChar(Char,Count) :-
 isOptionValid(Op) :- Op >= 1, Op =< 4, !, assert(menuOption(Op)).
 
 
-readMenuResponse(Count, _) :- Count =< 0, !, write('\nMaximo de tentativas alcançado! Encerrando programa.\n'), halt.
+readMenuResponse(Count, _) :- Count =< 0, !, write('\nMaximo de tentativas alcancado! Encerrando programa.\n'), halt.
 readMenuResponse(_, Option) :-
     read(Op),
     isOptionValid(Op), !,
     Option = Op.
 readMenuResponse(Count, Option) :-
-    write('Opção não encontrada! Tente novamente:\n'),
+    write('Opcao não encontrada! Tente novamente:\n'),
     plus(Count,-1,NewCount),
     readMenuResponse(NewCount, Option).
 
@@ -28,5 +27,5 @@ showMenu(Option) :-
     write('[3] - Computador Local\n'),
     write('[4] - Computador Socket\n'),
     drawChar('#',60), nl,
-    write('Escolha uma opção:\n'),
+    write('Escolha uma opcao:\n'),
     readMenuResponse(5, Option).

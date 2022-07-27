@@ -27,10 +27,10 @@ createServer(Port, AcceptFd) :-
 
 
 acceptClient(AcceptFd, Turn) :-
-    format('Player[~d]: Aguardando conexão\n', Turn+1),
+    format('Jogador[~d]: Aguardando conexão\n', Turn+1),
     tcp_accept(AcceptFd, Socket, _),
     tcp_open_socket(Socket, StreamIn, StreamOut),
-    format('Player[~d]: Conectado\n', Turn+1),
+    format('Jogador[~d]: Conectado\n', Turn+1),
     assert(clients(Turn, Socket, StreamIn, StreamOut)).
 
 
