@@ -9,16 +9,18 @@ drawChar(Char,Count) :-
 isOptionValid(Op) :- Op >= 1, Op =< 4, !, assert(menuOption(Op)).
 
 
-readMenuResponse(Count) :- Count =< 0, !, write('\nMaximo de tentativas alcançado! Encerrando programa.\n'), halt.
-readMenuResponse(Count) :-
+readMenuResponse(Count, _) :- Count =< 0, !, write('\nMaximo de tentativas alcançado! Encerrando programa.\n'), halt.
+readMenuResponse(Count, Option) :-
     read(Op),
-    not(isOptionValid(Op)), !,
+    isOptionValid(Op), !,
+    Option = Op.
+readMenuResponse(Count, Option) :-
     write('Opção não encontrada! Tente novamente:\n'),
     plus(Count,-1,NewCount),
-    readMenuResponse(NewCount).
+    readMenuResponse(NewCount, Option).
 
 
-showMenu() :-
+showMenu(Option) :-
     drawChar('#',60), nl,
     write('Escolha o modo de jogo:\n'),
     write('[1] - Multiplayer Local\n'),
@@ -27,5 +29,4 @@ showMenu() :-
     write('[4] - Computador Socket\n'),
     drawChar('#',60), nl,
     write('Escolha uma opção:\n'),
-    not(readMenuResponse(5)).
-
+    readMenuResponse(5, Option).
