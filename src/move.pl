@@ -1,6 +1,6 @@
 
 readPlayerMove(Turn, Move) :-
-    format('\nJogador[~d]: Insira sua jogada:\n', Turn+1), flush_output(),
+    format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
     read(MoveReaded),
     name(MoveReaded,MoveList),
     isMoveFormatValid(MoveList), !,
