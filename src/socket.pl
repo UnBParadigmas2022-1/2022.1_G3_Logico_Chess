@@ -1,5 +1,6 @@
 :- use_module(socket).
 
+%  clients(Turn, Socket, StreamIn, StreamOut)
 :- dynamic(clients/4).
 
 
@@ -11,6 +12,7 @@ initSocketGame(GameMode) :-
     GameMode == 2, !,
     acceptClient(AcceptFd, 1).
 initSocketGame(_) :- !.
+
 
 prepareSocketTurn(Turn) :-
     clients(Turn, _, StreamIn, StreamOut),
@@ -36,6 +38,7 @@ acceptClient(AcceptFd, Turn) :-
 
 
 closeClients() :- findall(S, clients(_,S,_,_), L), closeClient(L).
+
 
 closeClient([]) :- !.
 closeClient([S]) :- tcp_close_socket(S).
