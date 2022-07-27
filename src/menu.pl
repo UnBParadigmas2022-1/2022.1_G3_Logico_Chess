@@ -10,7 +10,7 @@ isOptionValid(Op) :- Op >= 1, Op =< 4, !, assert(menuOption(Op)).
 
 
 readMenuResponse(Count, _) :- Count =< 0, !, write('\nMaximo de tentativas alcançado! Encerrando programa.\n'), halt.
-readMenuResponse(Count, Option) :-
+readMenuResponse(_, Option) :-
     read(Op),
     isOptionValid(Op), !,
     Option = Op.

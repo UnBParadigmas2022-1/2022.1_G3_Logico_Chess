@@ -1,4 +1,19 @@
 
+readPlayerMove(Turn, Move) :-
+    format('\nPlayer[~d]: Insira sua jogada:\n', Turn+1), flush_output(),
+    read(MoveReaded),
+    name(MoveReaded,MoveList),
+    checkMove(Turn, MoveList, Move).
+
+checkMove(Turn, MoveList, Move) :-
+    not(isMoveFormatValid(MoveList)), !,
+    write('Formato de mensagem invalido!\n'),
+    write('Informe a posição atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
+    write('Exemplo: e2f5\n'), flush_output(),
+    readPlayerMove(Turn, Move).
+checkMove(_, MoveList, Move) :- parseMove(MoveList, Move).
+
+
 parseMove([A,B,C,D], Move) :-
     AA is A-97, BB is B-49,
     CC is C-97, DD is D-49,
