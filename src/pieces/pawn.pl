@@ -5,10 +5,12 @@ isPawnMoveValid(Turn, Move):-
     isSimpleMoveValid(Turn, Move).
 
 isSimpleMoveValid(white, [Px, Py, Cx, Cy]):-
+    not(board(Cx, Cy, _, _)),
     increment(Py, Y),
     Px == Cx,
     Cy == Y.
 isSimpleMoveValid(black, [Px, Py, Cx, Cy]):-
+    not(board(Cx, Cy, _, _)),
     decrement(Py, Y),
     Px == Cx,
     Cy == Y.
