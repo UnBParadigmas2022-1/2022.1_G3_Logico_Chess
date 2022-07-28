@@ -41,11 +41,13 @@ verifyPawnAttack(black, [Px, Py, Cx, Cy]):-
 
 verifyFirstMove(white, [Px, Py, Cx, Cy]):-
     board(Px, 1, pawn, white),
-    increment(Py, Y, 2),
+    increment(Py, Y1, 1),increment(Py, Y2, 2),
+    verifyCollision([_, _, Px, Y1]),
     Cx == Px,
-    Cy == Y.
+    Cy == Y2.
 verifyFirstMove(black, [Px, Py, Cx, Cy]):-
     board(Px, 6, pawn, black),
-    decrement(Py, Y, 2),
+    decrement(Py, Y1, 1),decrement(Py, Y2, 2),
+    verifyCollision([_, _, Px, Y1]),
     Cx == Px,
-    Cy == Y.
+    Cy == Y2.
