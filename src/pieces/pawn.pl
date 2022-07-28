@@ -2,32 +2,50 @@
 
 isPawnMoveValid(Turn, Move):-
     verifyPawnAttack(Turn, Move);
-    isSimpleMoveValid(Turn, Move).
+    (verifyCollision(Move),
+    (verifyFirstMove(Turn, Move);
+    isSimpleMoveValid(Turn, Move))).
+
+
+verifyCollision([_, _, Cx, Cy]):- not(board(Cx, Cy, _, _)).
+
 
 isSimpleMoveValid(white, [Px, Py, Cx, Cy]):-
-    not(board(Cx, Cy, _, _)),
-    increment(Py, Y),
-    Px == Cx,
+    increment(Py, Y, 1),
+    Cx == Px,
     Cy == Y.
 isSimpleMoveValid(black, [Px, Py, Cx, Cy]):-
-    not(board(Cx, Cy, _, _)),
-    decrement(Py, Y),
-    Px == Cx,
+    decrement(Py, Y, 1),
+    Cx == Px,
     Cy == Y.
 
-increment(X, X1):-
-    X1 is X+1.
+increment(X, X1, Qty):-
+    X1 is X+Qty.
 
-decrement(X, X1):-
-    X1 is X-1.
+
+decrement(X, X1, Qty):-
+    X1 is X-Qty.
+
 
 verifyPawnAttack(white, [Px, Py, Cx, Cy]):-
     board(Cx, Cy, pawn, black),
-    increment(Py, Y), decrement(Px, X1), increment(Px, X2),
-    (X1 == Cx ; X2 == Cx),
+    increment(Py, Y, 1), decrement(Px, X1, 1), increment(Px, X2, 1),
+    (Cx == X1 ; Cx == X2),
     Cy == Y.
 verifyPawnAttack(black, [Px, Py, Cx, Cy]):-
     board(Cx, Cy, pawn, white),
-    decrement(Py, Y), decrement(Px, X1), increment(Px, X2),
-    (X1 == Cx ; X2 == Cx),
+    decrement(Py, Y, 1), decrement(Px, X1, 1), increment(Px, X2, 1),
+    (Cx == X1 ; Cx == X2),
+    Cy == Y.
+
+
+verifyFirstMove(white, [Px, Py, Cx, Cy]):-
+    board(Px, 1, pawn, white),
+    increment(Py, Y, 2),
+    Cx == Px,
+    Cy == Y.
+verifyFirstMove(black, [Px, Py, Cx, Cy]):-
+    board(Px, 6, pawn, black),
+    decrement(Py, Y, 2),
+    Cx == Px,
     Cy == Y.
