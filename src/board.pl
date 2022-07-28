@@ -47,7 +47,9 @@ board(4, 0, king, white). %% e1
 board(4, 7, king, black). %% e8
 
 updateBoard([Px, Py, Cx, Cy], Piece, Turn):-
-    removePiece(board(Px, Py, _, _)), assert(board(Cx, Cy, Piece, Turn)), !.
+    removePiece(board(Px, Py, _, _)), 
+    removePiece(board(Cx, Cy, _, _)),
+    assert(board(Cx, Cy, Piece, Turn)), !.
 
 removePiece(Board):-
     retract(Board).
