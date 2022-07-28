@@ -18,3 +18,8 @@ read_output(Out, Codes, [Line|Lines]) :-
     atom_codes(Line, Codes),
     read_line_to_codes(Out, Next),
     read_output(Out, Next, Lines).
+
+% set_fen_position/2 -> Comando que seta posição no stockfish no formato fen
+set_fen_position(Stockfish, Fen) :-
+    atomics_to_string(['position', 'fen', Fen], " ", Command),
+    send_command(Stockfish, Command).
