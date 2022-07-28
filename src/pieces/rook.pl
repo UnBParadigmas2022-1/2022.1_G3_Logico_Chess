@@ -1,7 +1,7 @@
 :-consult(board).
 
 isRookMoveValid(Turn, Move):-
-    isVerticalEmpty(Move),
+    (isVerticalEmpty(Move); isHorizontalEmpty(Move)),
     verifyCollision(Move),
     isSimpleMoveValid(Turn, Move).
 
@@ -17,6 +17,14 @@ isVerticalEmpty([Px, Py, Cx, Cy]):-
 isVerticalEmpty([Px, X1, Cx, Cy]):-
     write('Caminho limpo'),nl.
 
+isHorizontalEmpty([Px, Py, Cx, Cy]):-
+    Px =:= Cx,
+    Py =\= Cy, !,
+    increment(Py, X1, 1),
+    not(board(Cx, X1, _, _)),
+    isHorizontalEmpty([Px, X1, Cx, Cy]).
+isHorizontalEmpty([Px, X1, Cx, Cy]):-
+    write('Caminho limpo'),nl.
 
 isSimpleMoveValid(white, [Px, Py, Cx, Cy]):-
     format('\nPx[~r]:\n', Px), flush_output(),
