@@ -8,7 +8,7 @@ playerMove(Turn, Move) :-
     isMoveValid(Turn, Move, Piece), !,
     updateBoard(Move, Piece, Turn).
 playerMove(Turn, Move) :-
-    write("Jogada invalida"),nl,
+    writeln("Jogada invalida"),flush_output(),
     playerMove(Turn, Move).
 
 
@@ -42,9 +42,3 @@ isMoveFormatValid([A,B,C,D]) :-                             % A move is valid if
     isLetterValid(A), isNumberValid(B),
     isLetterValid(C), isNumberValid(D).
 isMoveFormatValid(_) :- fail.
-
-movePosition([A,B,C,D], PreviousX, PreviousY, CurrentX, CurrentY):-
-    PreviousX = A,
-    PreviousY = B,
-    CurrentX = C,
-    CurrentY = D.
