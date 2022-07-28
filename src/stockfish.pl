@@ -18,6 +18,7 @@ send_command(Stockfish, Command) :-
 
 send_command(Stockfish, Out, Command, Lines) :-
     send_command(Stockfish, Command),
+    sleep(1),
     close_stream(Stockfish),
     read_output(Out, Lines).
 
@@ -39,10 +40,10 @@ set_fen_position(Stockfish, Fen) :-
     send_command(Stockfish, Command).
 
 % get_best_move/5 -> Comando que acha o melhor movimento, de acordo com
-% a posição Fen passada e a profundidade Depth de procura
-get_best_move(Stockfish, Out, Fen, Depth, Move) :-
+% a posição Fen passada e o tempo de busca Time (milessegundos)
+get_best_move(Stockfish, Out, Fen, Time, Move) :-
     set_fen_position(Stockfish, Fen),
-    atomics_to_string(['go', 'depth', Depth], " ", Command),
+    atomics_to_string(['go', 'movetime', Time], " ", Command),
     send_command(Stockfish, Out, Command, Lines),
     last(Lines, Line),
     split_string(Line, " ", "", Last), last(Last, Move),
