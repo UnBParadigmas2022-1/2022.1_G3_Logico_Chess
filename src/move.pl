@@ -1,15 +1,31 @@
+:- consult(board).
+:- consult(pieces/pawn).
+:- discontiguous playerMove/2.
 
-readPlayerMove(Turn, Move) :-
+playerMove(Turn, Move) :-
+    readMove(Turn, Move),
+    isPieceValid(Turn, Move, Piece),
+    isMoveValid(Turn, Move, Piece), !,
+    updateBoard(Move, Piece, Turn).
+playerMove(Turn, Move) :-
+    write("Jogada invalida"),nl,
+    playerMove(Turn, Move).
+
+
+isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
+
+
+readMove(Turn, Move) :-
     format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
     read(MoveReaded),
     name(MoveReaded,MoveList),
     isMoveFormatValid(MoveList), !,
     parseMove(MoveList, Move).
-readPlayerMove(Turn, Move) :-
+readMove(Turn, Move) :-
     write('\nFormato de mensagem invalido!\n'),
     write('Informe a posicao atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
     write('Exemplo: e2f5\n'), flush_output(),
-    readPlayerMove(Turn, Move).
+    readMove(Turn, Move).
 
 
 parseMove([A,B,C,D], Move) :-
@@ -18,11 +34,17 @@ parseMove([A,B,C,D], Move) :-
     Move = [AA, BB, CC, DD].
 
 
-isLetterValid(Letter) :- Letter >= 97, Letter =< 104.       %% 'a' <= Letter <= 'h'
-isNumberValid(Number) :- Number >= 49, Number =< 56.        %% '0' <= Number <= '8'
+isLetterValid(Letter) :- Letter >= 97, Letter =< 104.       % 'a' <= Letter <= 'h'
+isNumberValid(Number) :- Number >= 49, Number =< 56.        % '0' <= Number <= '8'
 
 
-isMoveFormatValid([A,B,C,D]) :-                             %% A move is valid if is in this format: [a-h][0-8][a-h][0-8]
+isMoveFormatValid([A,B,C,D]) :-                             % A move is valid if is in this format: [a-h][0-8][a-h][0-8]
     isLetterValid(A), isNumberValid(B),
     isLetterValid(C), isNumberValid(D).
 isMoveFormatValid(_) :- fail.
+
+movePosition([A,B,C,D], PreviousX, PreviousY, CurrentX, CurrentY):-
+    PreviousX = A,
+    PreviousY = B,
+    CurrentX = C,
+    CurrentY = D.
