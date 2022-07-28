@@ -8,9 +8,9 @@ initSocketGame(GameMode) :-
     write('\nInsira a porta do servidor:\n'),
     read(Port),
     createServer(Port, AcceptFd),
-    acceptClient(AcceptFd, 0),
+    acceptClient(AcceptFd, white),
     GameMode == 2, !,
-    acceptClient(AcceptFd, 1).
+    acceptClient(AcceptFd, black).
 initSocketGame(_) :- !.
 
 
@@ -30,10 +30,10 @@ createServer(Port, AcceptFd) :-
 
 
 acceptClient(AcceptFd, Turn) :-
-    format('Jogador[~d]: Aguardando conexão\n', Turn+1),
+    format('Jogador[~s]: Aguardando conexão\n', Turn),
     tcp_accept(AcceptFd, Socket, _),
     tcp_open_socket(Socket, StreamIn, StreamOut),
-    format('Jogador[~d]: Conectado\n', Turn+1),
+    format('Jogador[~s]: Conectado\n', Turn),
     assert(clients(Turn, Socket, StreamIn, StreamOut)).
 
 

@@ -23,8 +23,8 @@ game(Turn, GameMode) :-
 
 
 prepareTurn(Turn, 2) :- prepareSocketTurn(Turn).
-prepareTurn(0, 4) :- prepareSocketTurn(0).
-prepareTurn(1, 4) :- set_input(user_input), set_output(user_output). % Change this when computer gamemode is ready
+prepareTurn(white, 4) :- prepareSocketTurn(white).
+prepareTurn(black, 4) :- set_input(user_input), set_output(user_output). % Change this when computer gamemode is ready
 prepareTurn(_, _) :- !.
 
 
