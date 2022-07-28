@@ -1,3 +1,7 @@
+:- dynamic board/4.
+:- dynamic board/3.
+:- dynamic board/2.
+
 % Initial pawn
 board(0, 1, pawn, white). %% a2
 board(0, 6, pawn, black). %% a7
@@ -40,4 +44,15 @@ board(3, 7, queen, black). %% d8
 
 % Initial King
 board(4, 0, king, white). %% e1
-board(4 ,7, king, black). %% e8
+board(4, 7, king, black). %% e8
+
+updateBoard([Px, Py, Cx, Cy], Piece, Turn):-
+    removePiece(board(Px, Py, _, _)), assert(board(Cx, Cy, Piece, Turn)), !.
+
+removePiece(Board):-
+    retract(Board).
+removePiece(_Board).
+
+
+isPieceValid(Turn, [A, B, _, _], Piece):-
+    board(A, B, Piece, Turn).
