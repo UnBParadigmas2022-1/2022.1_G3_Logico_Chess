@@ -2,6 +2,14 @@
 start_stockfish(Stockfish, Out) :-
     process_create(path(stockfish), [], [stdin(pipe(Stockfish)), stdout(pipe(Out))]).
 
+% close_stockfish/2 -> Finaliza o stockfish fechando as duas streams
+close_stockfish(Stockfish, Out) :-
+    close_stream(Stockfish); close_stream(Out).
+
+% close_stream/1 -> Valida se uma stream está aberta e finaliza
+close_stream(Stream) :-
+    is_stream(Stream), close(Stream).
+
 % send_command/2 -> Envia comando SEM retorno de terminal (stdin não é fechada)
 % send_command/4 -> Envia comando COM retorno de terminal (nesse caso é preciso fechar o stdin)
 send_command(Stockfish, Command) :-
@@ -10,7 +18,7 @@ send_command(Stockfish, Command) :-
 
 send_command(Stockfish, Out, Command, Lines) :-
     send_command(Stockfish, Command),
-    close(Stockfish),
+    close_stream(Stockfish),
     read_output(Out, Lines).
 
 % read_output/2 -> Prepara leitura de stdout com lista de códigos
@@ -37,4 +45,17 @@ get_best_move(Stockfish, Out, Fen, Depth, Move) :-
     atomics_to_string(['go', 'depth', Depth], " ", Command),
     send_command(Stockfish, Out, Command, Lines),
     last(Lines, Line),
-    split_string(Line, " ", "", Last), last(Last, Move).
+    split_string(Line, " ", "", Last), last(Last, Move),
+    close_stockfish(Stockfish, Out).
+
+% get_evaluation/4 -> Comando que calcula a vantagem no jogo, de
+% acordo com a posição Fen passada
+get_evaluation(Stockfish, Out, Fen, Eval) :-
+    set_fen_position(Stockfish, Fen),
+    send_command(Stockfish, Out, 'eval', Lines),
+    reverse(Lines, ReverseLines),
+    nth0(1, ReverseLines, Line),
+    split_string(Line, " ", "", Last),
+    reverse(Last, ReverseLast),
+    nth0(7, ReverseLast, Eval),
+    close_stockfish(Stockfish, Out).
