@@ -1,21 +1,17 @@
 :-consult(board).
 
 isPawnMoveValid(Turn, Move):-
-    nth0(0, Move, PreviousX),
-    nth0(1, Move, PreviousY),
-    nth0(2, Move, CurrentX),
-    nth0(3, Move, CurrentY),
-    isTurnMoveValid(Turn, PreviousX, PreviousY, CurrentX, CurrentY).
+    isTurnMoveValid(Turn, Move).
 
-isTurnMoveValid(white, PreviousX, PreviousY, CurrentX, CurrentY):-
-    increment(PreviousY, Y),
-    PreviousX == CurrentX,
-    CurrentY == Y.
+isTurnMoveValid(white, [Px, Py, Cx, Cy]):-
+    increment(Py, Y),
+    Px == Cx,
+    Cy == Y.
 
-isTurnMoveValid(black, PreviousX, PreviousY, CurrentX, CurrentY):-
-    decrement(PreviousY, Y),
-    PreviousX == CurrentX,
-    CurrentY == Y.
+isTurnMoveValid(black, [Px, Py, Cx, Cy]):-
+    decrement(Py, Y),
+    Px == Cx,
+    Cy == Y.
 
 increment(X, X1):-
     X1 is X+1.
