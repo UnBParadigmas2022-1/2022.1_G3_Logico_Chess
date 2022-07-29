@@ -1,3 +1,4 @@
+:- dynamic board/5. %% X,Y,Piece,Color,Ref
 :- dynamic board/4.
 :- dynamic board/3.
 :- dynamic board/2.
@@ -22,20 +23,20 @@ board(7, 6, pawn, black). %% h7
 
 % Initial Bishop
 board(2, 0, bishop, white). %% c1
-board(2, 7, bishop, black). %% f1
-board(5, 0, bishop, white). %% c8
+board(2, 7, bishop, black). %% c8
+board(5, 0, bishop, white). %% f1
 board(5, 7, bishop, black). %% f8
 
 % Initial knight
 board(1, 0, knight, white). %% b1
-board(6, 0, knight, black). %% g1
-board(1, 7, knight, white). %% b8
+board(1, 7, knight, black). %% b8
+board(6, 0, knight, white). %% g1
 board(6, 7, knight, black). %% g8
 
 % Initial Rook
 board(0, 0, rook, white). %% a1
-board(7, 0, rook, black). %% a8
-board(0, 7, rook, white). %% h1
+board(0, 7, rook, black). %% a8
+board(7, 0, rook, white). %% h1
 board(7, 7, rook, black). %% h8
 
 % Initial Queen
