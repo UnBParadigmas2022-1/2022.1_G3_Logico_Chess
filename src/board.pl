@@ -1,4 +1,4 @@
-:- dynamic board/5. %% X,Y,Piece,Color,Ref
+:- dynamic board/5. %% board(X,Y,Piece,Color,Ref) Ref is the box/square interface reference
 :- dynamic board/4.
 :- dynamic board/3.
 :- dynamic board/2.

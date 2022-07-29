@@ -8,6 +8,7 @@
 :- dynamic(turn/1).     % turn(Turn)
 
 
+% Load pictures
 resource(res_wp, image, image('wp.xpm')).
 resource(res_bp, image, image('bp.xpm')).
 resource(res_wr, image, image('wr.xpm')).
@@ -21,7 +22,7 @@ resource(res_bk, image, image('bk.xpm')).
 resource(res_wq, image, image('wq.xpm')).
 resource(res_bq, image, image('bq.xpm')).
 
-
+% Associate pictures with their pieces
 piece(pawn, white, res_wp).
 piece(pawn, black, res_bp).
 piece(rook, white, res_wr).
@@ -36,47 +37,49 @@ piece(king, white, res_wk).
 piece(king, black, res_bk).
 
 
-initGameGui(Gamemode, Game, Turn) :-
+initGameGui(Game, Turn) :-
     assert(turn(Turn)),
-    startGui(Gamemode, Game).
+    startGui(Game).
     
 
-startGui(Gamemode, Game) :-
+startGui(Game) :-
+    % Create custom colours
     new(@dark, colour(@default, 30583, 38293, 22102)),
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
-    new(@Display, window('Chess', size(800,800))),
-    drawBoard(@Display, Gamemode, Game),
-    drawPieces(@Display),
-    send(@Display, open).
+    % Create and start the window
+    new(Display, window('Chess', size(800,800))),
+    drawBoard(Display, Game),
+    drawPieces(Display),
+    send(Display, open).
 
 
-drawBoard(Display, Gamemode, Game) :- draw(Display, 8, 8, 0, Gamemode, Game).
+drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
 
 
-draw(_, _, Height, Y, _, _) :- Y == Height.
-draw(Display, Width, Height, Y, Gamemode, Game) :-
-    drawLine(Display, 0, Y, Width, Gamemode, Game),
-    plus(Y,1,YY),
-    draw(Display, Width, Height, YY, Gamemode, Game).
+draw(_, _, Height, Y, _) :- Y == Height.
+draw(Display, Width, Height, Y, Game) :-
+    drawLine(Display, 0, Y, Width, Game),
+    plus(Y,1,YY),                           % Next row
+    draw(Display, Width, Height, YY, Game).
 
 
-drawLine(_, X, _, Width, _, _) :- X == Width.
-drawLine(Display, X, Y, Width, Gamemode, Game) :-
-    NewY is abs(Y-7),
+drawLine(_, X, _, Width, _) :- X == Width.
+drawLine(Display, X, Y, Width, Game) :-
+    NewY is abs(Y-7),                       % Convert to board/? coordinates
     send(Display, display,
         new(Ref, box(100,100)), point(X*100, Y*100)), 
-    drawBoxColor(Ref, X, Y),
-    send(Ref, recogniser,
+    drawBoxColor(Ref, X, NewY),
+    send(Ref, recogniser,                   % Call boxClickEvent on click
         click_gesture(left, '', single,
-            message(@prolog, boxClickEvent, Gamemode, X, NewY, Ref, Game))),
-    plus(X,1,XX),
-    drawLine(Display, XX, Y, Width, Gamemode, Game).
+            message(@prolog, boxClickEvent, X, NewY, Ref, Game))),
+    plus(X,1,XX),                           % Next column
+    drawLine(Display, XX, Y, Width, Game).
 
 
-boxClickEvent(Gamemode, X, Y, Ref, Game) :-
-    turn(Turn),
-    call(Game, GameMode, X, Y, Turn, Ref).
+boxClickEvent(X, Y, Ref, Game) :-
+    turn(Turn),                             % Get current turn (white or black)
+    call(Game, X, Y, Turn, Ref).            % Call game to make the move
 
 
 changeTurn(white) :- retract(turn(_)), assert(turn(black)).
@@ -84,20 +87,18 @@ changeTurn(black) :- retract(turn(_)), assert(turn(white)).
 
 
 selectBox(X, Y, Turn, Box) :-
-    assert(selected(X, Y, Box, Turn)),
-    send(Box, fill_pattern, @selected).
+    assert(selected(X, Y, Box, Turn)),      % Assert selected box
+    send(Box, fill_pattern, @selected).     % Change colour of box to selected
 
 
 deselectBox(X, Y, Box) :-
-    retract(selected(_, _, _, _)),
-    mod(X, 2) =:= mod(Y, 2),
-    send(Box, fill_pattern, @dark);
-    send(Box, fill_pattern, @light).
+    retract(selected(_, _, _, _)),          % Remove previous selection
+    drawBoxColor(Box, X, Y).                % Redraw the box to remove the selection color
 
 
 movePiece(Ref, X, Y) :-
-    NewY is abs(Y-7),
-    board(X, Y, _, _, Ref),
+    NewY is abs(Y-7),                       % Convert to interface coordinates
+    board(X, Y, _, _, Ref),                 % Get the box reference
     send(Ref, move, point(X*100, NewY*100)).
 
 
@@ -107,26 +108,24 @@ removePiece(X, Y) :-
 removePiece(_, _).
 
 
-drawBoxColor(Ref, X, Y) :-
+drawBoxColor(Ref, X, Y) :-                  % Draw the correct box color with board/? coordinates
     mod(X, 2) =:= mod(Y, 2),
-    send(Ref, fill_pattern, @light);
-    send(Ref, fill_pattern, @dark).
+    send(Ref, fill_pattern, @dark);
+    send(Ref, fill_pattern, @light).
 
 
-drawPieces(Display) :-
+drawPieces(Display) :-                      % Draw all pieces from the board/4
     findall([X,Y,Z,W], board(X,Y,Z,W),L),
     drawPiece(Display, L).
 
 
 drawPiece(_, []) :- !.
 drawPiece(Display, [[X,Y,Piece,Color]]) :-
-    piece(Piece, Color, Res),
-    NewY is abs(Y-7),
+    piece(Piece, Color, Res),               % Get piece image
+    NewY is abs(Y-7),                       % Convert to interface coordinates
     send(Display, display,
         new(Ref, bitmap(resource(Res))), point(X*100, NewY*100)),
-    assert(board(X,Y,Piece,Color,Ref)).
+    assert(board(X,Y,Piece,Color,Ref)).     % Add box reference to board/5
 drawPiece(Display, [Head|Tail]) :-
     drawPiece(Display, [Head]),
     drawPiece(Display, Tail).
-
-

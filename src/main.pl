@@ -2,28 +2,30 @@
 :- consult(move).
 :- consult(gui).
 
+:- dynamic(gamemode/1).     % gamemode(mode)
+
+
 main :-
     showMenu(GameMode),
-    initGameGui(GameMode, game, white).
+    assert(gamemode(GameMode)),
+    initGameGui(game, white).
 
 
-game(Gamemode, X, Y, Turn, _) :-
+game(X, Y, Turn, _) :-
     selected(Sx, Sy, SRef, Turn),
-    makeMove(Gamemode, Turn, [Sx, Sy, X, Y]), !,
-    applyMove(GameMode, [Sx, Sy, X, Y], Turn),
+    playerMove(Turn, [Sx, Sy, X, Y]), !,
+    gamemode(Gamemode),
+    applyMove(Gamemode, [Sx, Sy, X, Y], Turn),
     deselectBox(Sx, Sy, SRef),
     changeTurn(Turn).
-game(_, X, Y, Turn, Ref) :-
+game(X, Y, Turn, Ref) :-
     isPieceValid(X, Y, _, Turn),
     not(selected(_, _, _, _)),
     selectBox(X, Y, Turn, Ref).
-game(_, _, _, _, _) :-
+game(_, _, _, _) :-
     selected(Sx, Sy, SRef, _),
     deselectBox(Sx, Sy, SRef).
 
-
-makeMove(1, Turn, Move) :- playerMove(Turn, Move).
-makeMove(2, Turn, Move) :- playerMove(Turn, Move).
 
 applyMove(1, [Sx, Sy, X, Y], _) :-
     removePiece(X, Y),
