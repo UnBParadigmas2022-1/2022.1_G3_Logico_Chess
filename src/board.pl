@@ -47,15 +47,18 @@ board(3, 7, queen, black). %% d8
 board(4, 0, king, white). %% e1
 board(4, 7, king, black). %% e8
 
-updateBoard([Px, Py, Cx, Cy], Piece, Turn):-
-    removePiece(board(Px, Py, _, _)), 
-    removePiece(board(Cx, Cy, _, _)),
-    assert(board(Cx, Cy, Piece, Turn)).
+
+updateBoard([Px, Py, Cx, Cy], Ref):-
+    board(Px, Py, Piece, Turn, Ref),
+    removePiece(board(Px, Py, _, _, _)), 
+    removePiece(board(Cx, Cy, _, _, _)),
+    assert(board(Cx, Cy, Piece, Turn, Ref)).
+
+
+isPieceValid(X, Y, Piece, Color):-
+    board(X, Y, Piece, Color, _).
+
 
 removePiece(Board):-
     retract(Board).
 removePiece(_Board).
-
-
-isPieceValid(Turn, [A, B, _, _], Piece):-
-    board(A, B, Piece, Turn).
