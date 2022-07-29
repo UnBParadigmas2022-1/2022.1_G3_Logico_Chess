@@ -1,5 +1,6 @@
 :- consult(board).
 :- consult(pieces/pawn).
+:- consult(pieces/knight).
 :- discontiguous playerMove/2.
 
 playerMove(Turn, Move) :-
@@ -13,6 +14,7 @@ playerMove(Turn, Move) :-
 
 
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
+isMoveValid(Turn, Move, knight) :- isKnightMoveValid(Turn, Move).
 
 
 readMove(Turn, Move) :-
