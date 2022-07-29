@@ -1,9 +1,18 @@
 :-consult(board).
 
 isKnightMoveValid(Turn, Move):-
+    isMoveValid(Move),
+    (verifyCollision(Move);
+    isPlaceValid(Turn, Move)).
 
+verifyCollision([_, _, Cx, Cy]):- not(board(Cx, Cy, _, _)).
 
-isMoveValid(Turn, [Px, Py, Cx, Cy]):-
+isPlaceValid(white, [_, _, Cx, Cy]):-
+    board(Cx, Cy, _, black).
+isPlaceValid(black, [_, _, Cx, Cy]):-
+    board(Cx, Cy, _, white).
+
+isMoveValid([Px, Py, Cx, Cy]):-
     increment(Py, Y1, 1),
     increment(Py, Y2, 2),
     decrement(Py, Y3, 1),
@@ -25,3 +34,5 @@ increment(X, X1, Qty):-
 
 decrement(X, X1, Qty):-
     X1 is X-Qty.
+
+
