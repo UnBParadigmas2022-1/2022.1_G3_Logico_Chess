@@ -2,14 +2,16 @@
 
 isKnightMoveValid(Turn, Move):-
     isMoveValid(Move),
-    (verifyCollision(Move);
-    isPlaceValid(Turn, Move)).
+    (isSquareEmpty(Move);
+    isSquareValid(Turn, Move)).
 
-verifyCollision([_, _, Cx, Cy]):- not(board(Cx, Cy, _, _)).
+isSquareEmpty([_, _, Cx, Cy]):- 
+    not(board(Cx, Cy, _, _)).
 
-isPlaceValid(white, [_, _, Cx, Cy]):-
+isSquareValid(white, [_, _, Cx, Cy]):-
     board(Cx, Cy, _, black).
-isPlaceValid(black, [_, _, Cx, Cy]):-
+
+isSquareValid(black, [_, _, Cx, Cy]):-
     board(Cx, Cy, _, white).
 
 isMoveValid([Px, Py, Cx, Cy]):-
@@ -26,11 +28,8 @@ isMoveValid([Px, Py, Cx, Cy]):-
     (Cy == Y3 , (Cx == X2 ; Cx == X4));
     (Cy == Y4 , (Cx == X1 ; Cx == X3))).
 
-
-
 increment(X, X1, Qty):-
     X1 is X+Qty.
-
 
 decrement(X, X1, Qty):-
     X1 is X-Qty.

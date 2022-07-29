@@ -28,8 +28,8 @@ board(5, 7, bishop, black). %% f8
 
 % Initial knight
 board(1, 0, knight, white). %% b1
-board(6, 0, knight, black). %% g1
-board(1, 7, knight, white). %% b8
+board(6, 0, knight, white). %% g1
+board(1, 7, knight, black). %% b8
 board(6, 7, knight, black). %% g8
 
 % Initial Rook
