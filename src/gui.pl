@@ -66,10 +66,10 @@ drawLine(Display, X, Y, Width, Gamemode, Game) :-
     NewY is abs(Y-7),
     send(Display, display,
         new(Ref, box(100,100)), point(X*100, Y*100)), 
-            drawBoxColor(Ref, X, Y),
-            send(Ref, recogniser,
-                click_gesture(left, '', single,
-                    message(@prolog, boxClickEvent, Gamemode, X, NewY, Ref, Game))),
+    drawBoxColor(Ref, X, Y),
+    send(Ref, recogniser,
+        click_gesture(left, '', single,
+            message(@prolog, boxClickEvent, Gamemode, X, NewY, Ref, Game))),
     plus(X,1,XX),
     drawLine(Display, XX, Y, Width, Gamemode, Game).
 
@@ -97,7 +97,14 @@ deselectBox(X, Y, Box) :-
 
 movePiece(Ref, X, Y) :-
     NewY is abs(Y-7),
+    board(X, Y, _, _, Ref),
     send(Ref, move, point(X*100, NewY*100)).
+
+
+removePiece(X, Y) :-
+    board(X, Y, _, _, Ref), !,
+    free(Ref).
+removePiece(_, _).
 
 
 drawBoxColor(Ref, X, Y) :-

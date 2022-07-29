@@ -10,6 +10,7 @@ main :-
 game(Gamemode, X, Y, Turn, _) :-
     selected(Sx, Sy, SRef, Turn),
     makeMove(Gamemode, Turn, [Sx, Sy, X, Y]), !,
+    removePiece(X, Y),
     updateBoard([Sx, Sy, X, Y], PRef),
     movePiece(PRef, X, Y),
     deselectBox(Sx, Sy, SRef),
