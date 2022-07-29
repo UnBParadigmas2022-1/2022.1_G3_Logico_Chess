@@ -10,9 +10,7 @@ main :-
 game(Gamemode, X, Y, Turn, _) :-
     selected(Sx, Sy, SRef, Turn),
     makeMove(Gamemode, Turn, [Sx, Sy, X, Y]), !,
-    removePiece(X, Y),
-    updateBoard([Sx, Sy, X, Y], PRef),
-    movePiece(PRef, X, Y),
+    applyMove(GameMode, [Sx, Sy, X, Y], Turn),
     deselectBox(Sx, Sy, SRef),
     changeTurn(Turn).
 game(_, X, Y, Turn, Ref) :-
@@ -26,4 +24,14 @@ game(_, _, _, _, _) :-
 
 makeMove(1, Turn, Move) :- playerMove(Turn, Move).
 makeMove(2, Turn, Move) :- playerMove(Turn, Move).
-makeMove(3, Turn, Move) :- playerMove(Turn, Move).
+
+applyMove(1, [Sx, Sy, X, Y], _) :-
+    removePiece(X, Y),
+    updateBoard([Sx, Sy, X, Y], PRef),
+    movePiece(PRef, X, Y).
+applyMove(2, PlayerMove, Turn) :-               %% STOCKFISH INTEGRATION
+    applyMove(1, PlayerMove, Turn).
+    % CALL STOCKFISH (StockfishMove)
+    % applyMove(1, StockfishMove, Turn),
+    % changeTurn(Turn).                         %% PASS COMPUTER TURN
+
