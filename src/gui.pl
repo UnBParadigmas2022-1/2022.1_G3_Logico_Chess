@@ -4,6 +4,10 @@
 :- pce_image_directory('../assets').
 
 
+:- dynamic(selected/4). % selected(X, Y, Ref, Turn)
+:- dynamic(turn/1).     % turn(Turn)
+
+
 resource(res_wp, image, image('wp.xpm')).
 resource(res_bp, image, image('bp.xpm')).
 resource(res_wr, image, image('wr.xpm')).
@@ -32,41 +36,63 @@ piece(king, white, res_wk).
 piece(king, black, res_bk).
 
 
-drawBoard(Display) :- draw(Display, 8, 8, 0).
+initGameGui(Gamemode, Game, Turn) :-
+    assert(turn(Turn)),
+    startGui(Gamemode, Game).
+    
+
+startGui(Gamemode, Game) :-
+    new(@dark, colour(@default, 30583, 38293, 22102)),
+    new(@light, colour(@default, 60395, 60652, 53456)),
+    new(@selected, colour(@default, 30840, 30840, 24672)),
+    new(@Display, window('Chess', size(800,800))),
+    drawBoard(@Display, Gamemode, Game),
+    drawPieces(@Display),
+    send(@Display, open).
 
 
-draw(_, _, Height, Y) :- Y == Height, !.
-draw(Display, Width, Height, Y) :-
-    drawLine(Display, 0, Y, Width),
+drawBoard(Display, Gamemode, Game) :- draw(Display, 8, 8, 0, Gamemode, Game).
+
+
+draw(_, _, Height, Y, _, _) :- Y == Height.
+draw(Display, Width, Height, Y, Gamemode, Game) :-
+    drawLine(Display, 0, Y, Width, Gamemode, Game),
     plus(Y,1,YY),
-    draw(Display, Width, Height, YY).
+    draw(Display, Width, Height, YY, Gamemode, Game).
 
 
-drawLine(Display, X, _, Width) :- X == Width, !.
-drawLine(Display, X, Y, Width) :-
+drawLine(_, X, _, Width, _, _) :- X == Width.
+drawLine(Display, X, Y, Width, Gamemode, Game) :-
     NewY is abs(Y-7),
     send(Display, display,
         new(Ref, box(100,100)), point(X*100, Y*100)), 
             drawBoxColor(Ref, X, Y),
             send(Ref, recogniser,
                 click_gesture(left, '', single,
-                    message(@prolog, boxClickEvent, Ref, X, NewY))),
+                    message(@prolog, boxClickEvent, Gamemode, X, NewY, Ref, Game))),
     plus(X,1,XX),
-    drawLine(Display, XX, Y, Width).
+    drawLine(Display, XX, Y, Width, Gamemode, Game).
 
 
-boxClickEvent(Ref, X, Y) :-
-    write('boxClickEvent: '), write(Ref), write(', '), write(X), write(', '), write(Y), nl.
+boxClickEvent(Gamemode, X, Y, Ref, Game) :-
+    turn(Turn),
+    call(Game, GameMode, X, Y, Turn, Ref).
 
 
-selectBox(Box) :-
+changeTurn(white) :- retract(turn(_)), assert(turn(black)).
+changeTurn(black) :- retract(turn(_)), assert(turn(white)).
+
+
+selectBox(X, Y, Turn, Box) :-
+    assert(selected(X, Y, Box, Turn)),
     send(Box, fill_pattern, @selected).
 
 
-deselectBox(Box, X, Y) :-
+deselectBox(X, Y, Box) :-
+    retract(selected(_, _, _, _)),
     mod(X, 2) =:= mod(Y, 2),
-    send(Box, fill_pattern, @light);
-    send(Box, fill_pattern, @dark).
+    send(Box, fill_pattern, @dark);
+    send(Box, fill_pattern, @light).
 
 
 movePiece(Ref, X, Y) :-
@@ -85,7 +111,7 @@ drawPieces(Display) :-
     drawPiece(Display, L).
 
 
-drawPiece(Display, []) :- !.
+drawPiece(_, []) :- !.
 drawPiece(Display, [[X,Y,Piece,Color]]) :-
     piece(Piece, Color, Res),
     NewY is abs(Y-7),
@@ -97,11 +123,3 @@ drawPiece(Display, [Head|Tail]) :-
     drawPiece(Display, Tail).
 
 
-start :-
-    new(@dark, colour(@default, 30583, 38293, 22102)),
-    new(@light, colour(@default, 60395, 60652, 53456)),
-    new(@selected, colour(@default, 30840, 30840, 24672)),
-    new(@Display, window('Chess', size(800,800))),
-        drawBoard(@Display),
-        drawPieces(@Display),
-        send(@Display, open).
