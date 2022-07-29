@@ -1,6 +1,5 @@
 :- consult(menu).
 :- consult(move).
-:- consult(socket).
 :- consult(gui).
 
 main :-
