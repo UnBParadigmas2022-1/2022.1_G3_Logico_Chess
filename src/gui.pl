@@ -59,6 +59,21 @@ boxClickEvent(Ref, X, Y) :-
     write('boxClickEvent: '), write(Ref), write(', '), write(X), write(', '), write(Y), nl.
 
 
+selectBox(Box) :-
+    send(Box, fill_pattern, @selected).
+
+
+deselectBox(Box, X, Y) :-
+    mod(X, 2) =:= mod(Y, 2),
+    send(Box, fill_pattern, @light);
+    send(Box, fill_pattern, @dark).
+
+
+movePiece(Ref, X, Y) :-
+    NewY is abs(Y-7),
+    send(Ref, move, point(X*100, NewY*100)).
+
+
 drawBoxColor(Ref, X, Y) :-
     mod(X, 2) =:= mod(Y, 2),
     send(Ref, fill_pattern, @light);
