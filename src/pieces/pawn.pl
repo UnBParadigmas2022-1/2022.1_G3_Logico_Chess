@@ -28,12 +28,12 @@ decrement(X, X1, Qty):-
 
 
 verifyPawnAttack(white, [Px, Py, Cx, Cy]):-
-    board(Cx, Cy, pawn, black, _),
+    board(Cx, Cy, _, black, _),
     increment(Py, Y, 1), decrement(Px, X1, 1), increment(Px, X2, 1),
     (Cx == X1 ; Cx == X2),
     Cy == Y.
 verifyPawnAttack(black, [Px, Py, Cx, Cy]):-
-    board(Cx, Cy, pawn, white, _),
+    board(Cx, Cy, _, white, _),
     decrement(Py, Y, 1), decrement(Px, X1, 1), increment(Px, X2, 1),
     (Cx == X1 ; Cx == X2),
     Cy == Y.
