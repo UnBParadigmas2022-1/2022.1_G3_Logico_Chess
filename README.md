@@ -2,7 +2,7 @@
 
 **Disciplina**: FGA0210 - PARADIGMAS DE PROGRAMAÇÃO - T01 <br>
 **Nro do Grupo**: 03<br>
-**Paradigma**: Funcional<br>
+**Paradigma**: Lógico<br>
 
 ## Alunos
 
@@ -19,14 +19,18 @@
 
 
 ## Sobre 
-Descreva o seu projeto em linhas gerais. 
-Use referências, links, que permitam conhecer um pouco mais sobre o projeto.
+
+O projeto,como o próprio nome já diz, trata-se de um Xadrez, jogo de tabuleiro de natureza recreativa ou competitiva para dois jogadores. A partida de xadrez é disputada em um tabuleiro de casas claras e escuras, sendo que, no início, cada enxadrista controla dezesseis peças com diferentes formatos e características. O objetivo da partida é dar xeque-mate (também chamado simplesmente de mate) no rei adversário.
+
+O motivo para a escolha desse tema, é em decorrência da complexidade por trás de toda a interface gráfica e dos algoritmos de movimentação das diferentes peças do xadrez. Portanto, como uma forma de se aprender o paradigma lógico com a linguagem [Prolog](https://www.swi-prolog.org/) com objeitvo de exercitar a lógica para resolução de problemas, esse trabalho foi concebido.
+
+A ideia do projeto é baseada do projeto : ** FALTA COLOCAR **
 
 ## Screenshots
 Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcionamento.
 
 ## Instalação 
-**Linguagens**: xxxxxx<br>
+**Linguagem**: [Prolog](https://www.swi-prolog.org/) <br>
 **Tecnologias**: xxxxxx<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 Insira um manual ou um script para auxiliar ainda mais.
@@ -49,8 +53,16 @@ TEMPO: +/- 15min
 ## Participações
 Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 |Nome do Membro | Contribuição | Significância da Contribuição para o Projeto (Excelente/Boa/Regular/Ruim/Nula) |
-| -- | -- | -- |
-| Fulano  |  Programação dos Fatos da Base de Conhecimento Lógica | Boa |
+| :--: | :--: | :--: |
+|  [Antônio Aldísio](https://github.com/AntonioAldisio/) | FALTA | FALTA |
+|  [Dafne Moretti Moreira](https://github.com/DafneM/) | FALTA | FALTA |
+|  [Igor Queiroz Lima](https://github.com/igorq937/) | FALTA | FALTA |
+|  [João Pedro Moura Oliveira](https://github.com/Joao-Moura/) | FALTA | FALTA |
+|  [Lucas Gomes Lopes](https://github.com/LucasGlopes/) | FALTA | FALTA |
+|  [Lucas Ursulino Boaventura](https://github.com/lboaventura25/) | FALTA | FALTA |
+|  [Rafael Cleydson da Silva Ramos](https://github.com/RcleydsonR/) | FALTA | FALTA |
+|  [Thiago Sampaio de Paiva](https://github.com/thiagohdaqw/) |FALTA | FALTA |
+
 
 ## Outros 
 Quaisquer outras informações sobre o projeto podem ser descritas aqui.
