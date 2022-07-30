@@ -16,7 +16,7 @@ isMoveValid(Turn, Move, knight) :- isKnightMoveValid(Turn, Move).
 isMoveValid(Turn, Move, bishop) :- isBishopMoveValid(Turn, Move).
 isMoveValid(Turn, Move, queen) :- isQueenMoveValid(Turn, Move).
 isMoveValid(Turn, Move, rook) :- isRookMoveValid(Turn, Move).
-isMoveValid(Turn, Move, rook) :- isKingMoveValid(Turn, Move).
+isMoveValid(Turn, Move, king) :- isKingMoveValid(Turn, Move).
 
 readMove(Turn, Move) :-
     format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
