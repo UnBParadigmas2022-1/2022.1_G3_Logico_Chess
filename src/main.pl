@@ -1,6 +1,7 @@
 :- consult(menu).
 :- consult(move).
 :- consult(gui).
+:- consult(board).
 :- consult(stockfish).
 
 :- dynamic(gamemode/1).     % gamemode(mode)
@@ -31,6 +32,7 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     removePiece(X, Y),
     updateBoard([Sx, Sy, X, Y], PRef),
     movePiece(PRef, X, Y),
+    applyPromotion(X, Y),
     turn(Turn),
     changeTurn(Turn).
 applyMove(2, PlayerMove) :-

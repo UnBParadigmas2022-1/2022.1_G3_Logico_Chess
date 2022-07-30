@@ -1,6 +1,7 @@
 :-consult(board).
 :-consult(utils).
 
+
 isPawnMoveValid(Turn, Move):-
     verifyPawnAttack(Turn, Move);
     (verifyCollision(Move),

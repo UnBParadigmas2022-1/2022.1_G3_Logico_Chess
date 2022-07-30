@@ -40,7 +40,6 @@ piece(king, black, res_bk).
 initGameGui(Game, Turn) :-
     assert(turn(Turn)),
     startGui(Game).
-    
 
 startGui(Game) :-
     % Create custom colours
@@ -68,7 +67,7 @@ drawLine(_, X, _, Width, _) :- X == Width.
 drawLine(Display, X, Y, Width, Game) :-
     NewY is abs(Y-7),                       % Convert to board/? coordinates
     send(Display, display,
-        new(Ref, box(100,100)), point(X*100, Y*100)), 
+        new(Ref, box(100,100)), point(X*100, Y*100)),
     drawBoxColor(Ref, X, NewY),
     send(Ref, recogniser,                   % Call boxClickEvent on click
         click_gesture(left, '', single,
@@ -108,6 +107,13 @@ removePiece(X, Y) :-
 removePiece(_, _).
 
 
+changePiece(X, Y, NewPiece) :-
+    NewY is abs(Y-7),                       % Convert to interface coordinates
+    board(X, Y, _, Color, Ref),             % Get the box reference
+    piece(NewPiece, Color, Res),            % Get the new piece image
+    send(Ref, image, bitmap(resource(Res))).
+
+
 drawBoxColor(Ref, X, Y) :-                  % Draw the correct box color with board/? coordinates
     mod(X, 2) =:= mod(Y, 2),
     send(Ref, fill_pattern, @dark);
@@ -129,3 +135,4 @@ drawPiece(Display, [[X,Y,Piece,Color]]) :-
 drawPiece(Display, [Head|Tail]) :-
     drawPiece(Display, [Head]),
     drawPiece(Display, Tail).
+
