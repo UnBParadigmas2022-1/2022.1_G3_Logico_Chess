@@ -2,7 +2,7 @@
 :- dynamic board/4.
 :- dynamic board/3.
 :- dynamic board/2.
-:- consult(gui).
+
 
 % Initial pawn
 board(0, 1, pawn, white). %% a2
@@ -49,7 +49,7 @@ board(4, 0, king, white). %% e1
 board(4, 7, king, black). %% e8
 
 
-updateBoard([Px, Py, Cx, Cy], Ref):-
+updateBoard([Px, Py, Cx, Cy], Ref, Piece):-
     board(Px, Py, Piece, Turn, Ref),
     removePiece(board(Px, Py, _, _, _)),
     removePiece(board(Cx, Cy, _, _, _)),
@@ -63,11 +63,3 @@ isPieceValid(X, Y, Piece, Color):-
 removePiece(Board):-
     retract(Board).
 removePiece(_Board).
-
-
-applyPromotion(Turn,X, Y):-
-    board(X, Y, pawn, Turn, Ref),
-    (Py == 7; Py == 0),
-    removePiece(board(X, Y, _, _, _)),
-    assert(board(X, Y, queen, Turn, Ref)),
-    changePiece(X, Y, queen).

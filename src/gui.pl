@@ -108,7 +108,6 @@ removePiece(_, _).
 
 
 changePiece(X, Y, NewPiece) :-
-    NewY is abs(Y-7),                       % Convert to interface coordinates
     board(X, Y, _, Color, Ref),             % Get the box reference
     piece(NewPiece, Color, Res),            % Get the new piece image
     send(Ref, image, bitmap(resource(Res))).
