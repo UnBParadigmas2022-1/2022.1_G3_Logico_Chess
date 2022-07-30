@@ -1,32 +1,39 @@
 :- consult(menu).
 :- consult(move).
-:- consult(socket).
+:- consult(gui).
+
+:- dynamic(gamemode/1).     % gamemode(mode)
+
 
 main :-
     showMenu(GameMode),
-    initGame(GameMode),
-    game(white, GameMode).
+    assert(gamemode(GameMode)),
+    initGameGui(game, white).
 
 
-initGame(GameMode) :- 
-    (GameMode == 2 ; GameMode == 4), !,
-    initSocketGame(GameMode).
-initGame(_) :- !.
+game(X, Y, Turn, _) :-
+    selected(Sx, Sy, SRef, Turn),
+    playerMove(Turn, [Sx, Sy, X, Y]), !,
+    gamemode(Gamemode),
+    applyMove(Gamemode, [Sx, Sy, X, Y], Turn),
+    deselectBox(Sx, Sy, SRef),
+    changeTurn(Turn).
+game(X, Y, Turn, Ref) :-
+    isPieceValid(X, Y, _, Turn),
+    not(selected(_, _, _, _)),
+    selectBox(X, Y, Turn, Ref).
+game(_, _, _, _) :-
+    selected(Sx, Sy, SRef, _),
+    deselectBox(Sx, Sy, SRef).
 
 
-game(Turn, GameMode) :-
-    prepareTurn(Turn, GameMode),
-    playerMove(Turn, Move),
-    format(user_output, 'Jogador[~s]: Jogou ', Turn), write(user_output, Move), write(user_output, '\n'), flush_output(),
-    changeTurn(Turn, NextTurn),
-    game(NextTurn, GameMode).
+applyMove(1, [Sx, Sy, X, Y], _) :-
+    removePiece(X, Y),
+    updateBoard([Sx, Sy, X, Y], PRef),
+    movePiece(PRef, X, Y).
+applyMove(2, PlayerMove, Turn) :-               %% STOCKFISH INTEGRATION
+    applyMove(1, PlayerMove, Turn).
+    % CALL STOCKFISH (StockfishMove)
+    % applyMove(1, StockfishMove, Turn),
+    % changeTurn(Turn).                         %% PASS COMPUTER TURN
 
-
-prepareTurn(Turn, 2) :- prepareSocketTurn(Turn).
-prepareTurn(white, 4) :- prepareSocketTurn(white).
-prepareTurn(black, 4) :- set_input(user_input), set_output(user_output). % Change this when computer gamemode is ready
-prepareTurn(_, _) :- !.
-
-
-changeTurn(white, NewTurn):- NewTurn = black.
-changeTurn(black, NewTurn):- NewTurn = white.
