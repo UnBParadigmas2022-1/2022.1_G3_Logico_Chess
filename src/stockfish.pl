@@ -116,3 +116,12 @@ format_rank(X, Lines) :-
     numlist(0, 7, Y),
     map_list(Y, format_piece(X), Ranks),
     sum_list(Ranks, Lines).
+
+
+% board_to_fen/2 -> Converte a base de dados board para uma posição Fen
+board_to_fen(Turn, Fen) :-
+    numlist(0, 7, X),
+    map_list(X, format_rank, Lines),
+    atomics_to_string(Lines, "/", FenLines),
+    atom_chars(Turn, [FenTurn|_]),
+    atomics_to_string([FenLines, FenTurn], " ", Fen).
