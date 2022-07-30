@@ -1,24 +1,20 @@
 :-consult(board).
-:-discontiguous isDiagonalEmpty/1.
 
+isBishopMoveValid(Turn, [Px, Py, Cx, Cy]):- Px == Cx, Py == Cy, fail.
+isBishopMoveValid(Turn, [Px, Py, Cx, Cy]):- board(Cx, Cy, _, Turn), fail. 
+isBishopMoveValid(Turn, [Px, Py, Cx, Cy]):- abs(Px-Cx) =\= abs(Py-Cy), fail. % so deixa andar na diagonal
 isBishopMoveValid(Turn, Move):- 
-    (isDiagonalEmpty(Move)).
+    isFreeWay(Move, 1, 1);
+    isFreeWay(Move, 1, -1);
+    isFreeWay(Move, -1, 1);
+    isFreeWay(Move, -1, -1).
 
-isDiagonalEmpty([Px, Py, Cx, Cy]):-
-    (Px =\= Cx, Py =\= Cy), !,
-    ((Cx > Px, increment(Px, X1, 1)); (Cx < Px, decrement(Px, X1, 1))), 
-    ((Cx > Px, increment(Py, Y1, 1)); (Cx < Px, decrement(Py, Y1, 1))),
-    not(board(X1, Y1, _, _)),
-    isDiagonalEmpty([X1, Y1, Cx, Cy]).
-
-isDiagonalEmpty([X1, Y1, Cx, Cy]):-
-    write('Caminho limpo'),nl.
-
-isDiagonalEmpty([X1, Y1, Cx, Cy]):-
-    write('Caminho limpo'),nl.
-
-increment(X, X1, Qty):-
-    X1 is X + Qty.
-
-decrement(X, X1, Qty):-
-    X1 is X - Qty.
+isFreeWay([Px, Py, Cx, Cy], StepX, StepY) :- (Px > 7; Px < 0; Py > 7; Py < 0), !, fail. % condicao de parada
+isFreeWay([Px, Py, Cx, Cy], StepX, StepY) :-
+    X is Px+StepX,
+    Y is Py+StepY,
+    X == Cx, Y == Cy;
+        XX is Px+StepX,
+        YY is Py+StepY,
+        not(board(XX, YY,_,_)),
+        isFreeWay([XX, YY, Cx, Cy], StepX, StepY).
