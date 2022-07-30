@@ -57,8 +57,10 @@ get_best_move(Stockfish, Out, Fen, Time, Move) :-
     atomics_to_string(['go', 'movetime', Time], " ", Command),
     send_command(Stockfish, Out, Command, Lines),
     last(Lines, Line),
-    split_string(Line, " ", "", Last), last(Last, String),
-    name(String, Move),
+    split_string(Line, " ", "", Last),
+    nth0(1, Last, String),
+    name(String, MoveList),
+    parseMove(MoveList, Move),
     close_stockfish(Stockfish, Out).
 
 
@@ -82,8 +84,9 @@ case_piece(Piece, black, Value) :- downcase_atom(Piece, Value).
 
 % format_piece/3 -> Pega a peça e retorna sua inicial de acordo com sua cor
 format_piece(Y, X, Letter) :-
+    (board(X, Y, knight, Color, _), case_piece(n, Color, Letter)), !;
     (
-        board(X, Y, Piece, Color),
+        board(X, Y, Piece, Color, _),
         case_piece(Piece, Color, Cased)),
         atom_chars(Cased, [Letter|_]
     ), !;
@@ -120,7 +123,8 @@ format_rank(X, Lines) :-
 
 % board_to_fen/2 -> Converte a base de dados board para uma posição Fen
 board_to_fen(Turn, Fen) :-
-    numlist(0, 7, X),
+    numlist(0, 7, List),
+    reverse(List, X),
     map_list(X, format_rank, Lines),
     atomics_to_string(Lines, "/", FenLines),
     atom_chars(Turn, [FenTurn|_]),
