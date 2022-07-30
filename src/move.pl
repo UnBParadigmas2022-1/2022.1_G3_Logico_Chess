@@ -3,14 +3,10 @@
 :- consult(pieces/knight).
 :- discontiguous playerMove/2.
 
-playerMove(Turn, Move) :-
-    readMove(Turn, Move),
-    isPieceValid(Turn, Move, Piece),
-    isMoveValid(Turn, Move, Piece), !,
-    updateBoard(Move, Piece, Turn).
-playerMove(Turn, Move) :-
-    writeln("Jogada invalida"),flush_output(),
-    playerMove(Turn, Move).
+
+playerMove(Turn, [Sx, Sy, X, Y]) :-
+    isPieceValid(Sx, Sy, Piece, Turn),
+    isMoveValid(Turn, [Sx, Sy, X, Y], Piece).
 
 
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
