@@ -6,13 +6,13 @@ isKnightMoveValid(Turn, Move):-
     isSquareValid(Turn, Move)).
 
 isSquareEmpty([_, _, Cx, Cy]):- 
-    not(board(Cx, Cy, _, _)).
+    not(board(Cx, Cy, _, _, _)).
 
 isSquareValid(white, [_, _, Cx, Cy]):-
-    board(Cx, Cy, _, black).
+    board(Cx, Cy, _, black, _).
 
 isSquareValid(black, [_, _, Cx, Cy]):-
-    board(Cx, Cy, _, white).
+    board(Cx, Cy, _, white, _).
 
 isMoveValid([Px, Py, Cx, Cy]):-
     increment(Py, Y1, 1),
