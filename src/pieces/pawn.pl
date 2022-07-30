@@ -1,4 +1,5 @@
 :-consult(board).
+:-consult(utils).
 
 isPawnMoveValid(Turn, Move):-
     verifyPawnAttack(Turn, Move);
@@ -18,13 +19,6 @@ isSimpleMoveValid(black, [Px, Py, Cx, Cy]):-
     decrement(Py, Y, 1),
     Cx == Px,
     Cy == Y.
-
-increment(X, X1, Qty):-
-    X1 is X+Qty.
-
-
-decrement(X, X1, Qty):-
-    X1 is X-Qty.
 
 
 verifyPawnAttack(white, [Px, Py, Cx, Cy]):-
