@@ -12,7 +12,6 @@ playerMove(Turn, [Sx, Sy, X, Y]) :-
 
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
 isMoveValid(Turn, Move, knight) :- isKnightMoveValid(Turn, Move).
-
 isMoveValid(Turn, Move, bishop) :- isBishopMoveValid(Turn, Move).
 
 readMove(Turn, Move) :-
