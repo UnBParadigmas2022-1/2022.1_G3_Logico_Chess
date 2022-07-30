@@ -2,6 +2,7 @@
 :- consult(pieces/pawn).
 :- consult(pieces/knight).
 :- consult(pieces/bishop).
+:- consult(pieces/queen).
 :- discontiguous playerMove/2.
 
 
@@ -13,6 +14,7 @@ playerMove(Turn, [Sx, Sy, X, Y]) :-
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
 isMoveValid(Turn, Move, knight) :- isKnightMoveValid(Turn, Move).
 isMoveValid(Turn, Move, bishop) :- isBishopMoveValid(Turn, Move).
+isMoveValid(Turn, Move, queen) :- isQueenMoveValid(Turn, Move).
 
 readMove(Turn, Move) :-
     format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
