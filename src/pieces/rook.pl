@@ -36,7 +36,7 @@ isEmptyVerticalFront(Turn, [Px, X1, Cx, Cy]):-
 checkVerticalDown(Turn, [Px, Py, Cx, Cy]):-
     Px == Cx,
     Py > Cy,
-    isEmptyVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]).
+    isEmptyVerticalDown(Turn, [Px, Py, Cx, Cy]).
 
 isEmptyVerticalDown(Turn, [Px, Py, Cx, Cy]):-
     decrement(Py, X1, 1),
