@@ -1,11 +1,10 @@
 :-consult(board).
 
 isRookMoveValid(Turn, Move):-
-    checkingVerticalUp(Turn, Move);
-    checkingVerticalDown(Turn, Move);
-    checkingHorizontalRight(Turn, Move);
-    checkingHorizontalLeft(Turn, Move).
-
+    verificaVerticalFront(Turn, Move);
+    verificaVerticalDown(Turn, Move);
+    verificaHorizontalRight(Turn, Move);
+    verificaHorizontalLeft(Turn, Move).
 
 atack(Turn, [Px, Py, Cx, Cy]):-
     Turn == white, !,
@@ -14,67 +13,68 @@ atack(Turn, [Px, Py, Cx, Cy]):-
     Turn == black,
     board(Px, Py, _, white).
 
-checkingVerticalUp(Turn, [Px, Py, Cx, Cy]):-
+verificaVerticalFront(Turn, [Px, Py, Cx, Cy]):-
+    write('verificaVerticalFront'), nl,
     Px == Cx,
     Py < Cy,
-    isEmptyVerticalUp(Turn, [Px, Py, Cx, Cy]).
+    isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]).
 
-isEmptyVerticalUp(Turn, [Px, Py, Cx, Cy]):-
-    increment(Py, X1);
-    (X1 =:= Cx ),
-    atack(Turn, [Px, Py, Cx, Cy]),
-X1 =\= Cy+1, !,
-        not(board(Px, X1, _, _)),
-        isEmptyVerticalUp(Turn, [Px, X1, Cx, Cy]).
-isEmptyVerticalUp(Turn, [Px, X1, Cx, Cy]):-
+isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]):-
+    write(Py),nl,
+    increment(Py, X1),
+    not(board(Px, X1, _, _)),
+    X1 =\= Cy+1, !,
+    isVerticalFrontEmpty(Turn, [Px, X1, Cx, Cy]).
+isVerticalFrontEmpty(Turn, [Px, X1, Cx, Cy]):-
     Px == Cx,
-    X1 == Cy,
-    atack(Turn, [Px, X1, Cx, Cy])
+    X1 == Cy;
+    atack(Turn, [Px, X1, Cx, Cy]).
 
-
-checkingVerticalDown(Turn, [Px, Py, Cx, Cy]):-
+verificaVerticalDown(Turn, [Px, Py, Cx, Cy]):-
     Px == Cx,
     Py > Cy,
-    isEmptyVerticalDown(Turn, [Px, Py, Cx, Cy]).
+    isVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]).
 
-
-isEmptyVerticalDown(Turn, [Px, Py, Cx, Cy]):-
+isVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]):-
     decrement(Py, X1),
+    not(board(Px, X1, _, _)),
     X1 =\= Cy-1, !,
-    (atack(Turn, [Px, X1, Cx, Cy]) ; not(board(Px, X1, _, _))),
-    isEmptyVerticalDown(Turn, [Px, X1, Cx, Cy]).
-isEmptyVerticalDown(Turn, [Px, X1, Cx, Cy]):-
+    isVerticalDownEmpty(Turn, [Px, X1, Cx, Cy]).
+isVerticalDownEmpty(Turn, [Px, X1, Cx, Cy]):-
     Px == Cx,
-    X1 == Cy.
+    X1 == Cy;
+    atack(Turn, [Px, X1, Cx, Cy]
 
 
-checkingHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
+verificaHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
     Py == Cy,
     Px < Cx,
-    isEmptyHorizontalRight(Turn, [Px, Py, Cx, Cy]).
+    isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]).
 
-isEmptyHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
+isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]):-
     increment(Px, X1),
+    not(board(X1,Py, _, _))),
     X1 =\= Cx+1, !,
-    (atack(Turn, [X1, Py, Cx, Cy]) ; not(board(X1,Py, _, _))),
-    isEmptyHorizontalRight(Turn, [X1, Py, Cx, Cy]).
-isEmptyHorizontalRight(Turn, [X1, Py, Cx, Cy]):-
+    isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]).
+isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]):-
     X1 == Cx,
-    Py == Cy.
+    Py == Cy;
+    atack(Turn, [X1, Py, Cx, Cy]).
 
-checkingHorizontalLeft(Turn, [Px, Py, Cx, Cy]):-
+verificaHorizontalLeft(Turn, [Px, Py, Cx, Cy]):-
     Py == Cy,
     Px > Cx,
-    isEmptyHorizontalLeft(Turn, [Px, Py, Cx, Cy]).
+    isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]).
 
-isEmptyHorizontalLeft(Turn, [Px, Py, Cx, Cy]):-
+isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]):-
     decrement(Px, X1),
+    not(board(X1,Py, _, _)),
     X1 =\= Cx-1, !,
-    (atack(Turn, [X1, Py, Cx, Cy]) ; not(board(X1,Py, _, _))),
-    isEmptyHorizontalLeft(Turn, [X1, Py, Cx, Cy]).
-isEmptyHorizontalLeft(Turn, [X1, Py, Cx, Cy]):-
+    isHorizontalLeftEmpty(Turn, [X1, Py, Cx, Cy]).
+isHorizontalLeftEmpty(Turn, [X1, Py, Cx, Cy]):-
     X1 == Cx,
-    Py == Cy.
+    Py == Cy;
+    atack(Turn, [X1, Py, Cx, Cy]).
 
 
 increment(X, X1):-
