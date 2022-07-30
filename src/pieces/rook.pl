@@ -1,4 +1,5 @@
 :-consult(board).
+:-consult(utils).
 
 isRookMoveValid(Turn, Move):-
     verificaVerticalFront(Turn, Move);
@@ -8,10 +9,10 @@ isRookMoveValid(Turn, Move):-
 
 atack(Turn, [Px, Py, Cx, Cy]):-
     Turn == white, !,
-    board(Px, Py, _, black).
+    board(Px, Py, _, black, _).
 atack(Turn, [Px, Py, Cx, Cy]):-
     Turn == black,
-    board(Px, Py, _, white).
+    board(Px, Py, _, white, _).
 
 verificaVerticalFront(Turn, [Px, Py, Cx, Cy]):-
     write('verificaVerticalFront'), nl,
@@ -21,7 +22,7 @@ verificaVerticalFront(Turn, [Px, Py, Cx, Cy]):-
 
 isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]):-
     write(Py),nl,
-    increment(Py, X1),
+    increment(Py, X1, 1),
     not(board(Px, X1, _, _)),
     X1 =\= Cy+1, !,
     isVerticalFrontEmpty(Turn, [Px, X1, Cx, Cy]).
@@ -36,8 +37,8 @@ verificaVerticalDown(Turn, [Px, Py, Cx, Cy]):-
     isVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]):-
-    decrement(Py, X1),
-    not(board(Px, X1, _, _)),
+    decrement(Py, X1, 1),
+    not(board(Px, X1, _, _, _)),
     X1 =\= Cy-1, !,
     isVerticalDownEmpty(Turn, [Px, X1, Cx, Cy]).
 isVerticalDownEmpty(Turn, [Px, X1, Cx, Cy]):-
@@ -52,8 +53,8 @@ verificaHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
     isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]):-
-    increment(Px, X1),
-    not(board(X1,Py, _, _))),
+    increment(Px, X1, 1),
+    not(board(X1,Py, _, _, _))),
     X1 =\= Cx+1, !,
     isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]).
 isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]):-
@@ -67,8 +68,8 @@ verificaHorizontalLeft(Turn, [Px, Py, Cx, Cy]):-
     isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]):-
-    decrement(Px, X1),
-    not(board(X1,Py, _, _)),
+    decrement(Px, X1, 1),
+    not(board(X1,Py, _, _, _)),
     X1 =\= Cx-1, !,
     isHorizontalLeftEmpty(Turn, [X1, Py, Cx, Cy]).
 isHorizontalLeftEmpty(Turn, [X1, Py, Cx, Cy]):-
@@ -76,10 +77,4 @@ isHorizontalLeftEmpty(Turn, [X1, Py, Cx, Cy]):-
     Py == Cy;
     atack(Turn, [X1, Py, Cx, Cy]).
 
-
-increment(X, X1):-
-    X1 is X+1.
-
-decrement(X, X1):-
-    X1 is X-1.
 
