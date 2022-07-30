@@ -19,7 +19,6 @@ atack(Turn, [Px, Py, Cx, Cy]):-
 verificaVerticalFront(Turn, [Px, Py, Cx, Cy]):-
     Px == Cx,
     Py < Cy,
-    write('Sou Vertical Front'),nl,
     isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]).
 % Feito atack para o caso de o jogador selecionar uma peça do adversário.
 isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]):-
@@ -35,7 +34,6 @@ isVerticalFrontEmpty(Turn, [Px, X1, Cx, Cy]):-
 verificaVerticalDown(Turn, [Px, Py, Cx, Cy]):-
     Px == Cx,
     Py > Cy,
-    write('Sou Vertical Down'),nl,
     isVerticalDownEmpty(Turn, [Px, Py, Cx, Cy]).
 
 % Feito atack para o caso de o jogador selecionar uma peça do adversário.
@@ -52,7 +50,6 @@ isVerticalDownEmpty(Turn, [Px, X1, Cx, Cy]):-
 verificaHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
     Py == Cy,
     Px < Cx,
-    write('Sou Hozizontal Right'),nl,
     isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]):-
@@ -67,7 +64,6 @@ isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]):-
 verificaHorizontalLeft(Turn, [Px, Py, Cx, Cy]):-
     Py == Cy,
     Px > Cx,
-    write('Sou Hozizontal Left'),nl,
     isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isHorizontalLeftEmpty(Turn, [Px, Py, Cx, Cy]):-
