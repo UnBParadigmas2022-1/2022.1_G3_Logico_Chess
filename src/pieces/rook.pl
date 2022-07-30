@@ -21,7 +21,6 @@ verificaVerticalFront(Turn, [Px, Py, Cx, Cy]):-
     isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]).
 
 isVerticalFrontEmpty(Turn, [Px, Py, Cx, Cy]):-
-    write(Py),nl,
     increment(Py, X1, 1),
     not(board(Px, X1, _, _)),
     X1 =\= Cy+1, !,
@@ -54,7 +53,7 @@ verificaHorizontalRight(Turn, [Px, Py, Cx, Cy]):-
 
 isHorizontalRightEmpty(Turn, [Px, Py, Cx, Cy]):-
     increment(Px, X1, 1),
-    not(board(X1,Py, _, _, _))),
+    not(board(X1,Py, _, _, _)),
     X1 =\= Cx+1, !,
     isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]).
 isHorizontalRightEmpty(Turn, [X1, Py, Cx, Cy]):-
