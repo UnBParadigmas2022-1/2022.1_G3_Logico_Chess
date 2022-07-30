@@ -1,4 +1,5 @@
 :-consult(board).
+:-consult(utils).
 
 isKnightMoveValid(Turn, Move):-
     isMoveValid(Move),
@@ -27,11 +28,3 @@ isMoveValid([Px, Py, Cx, Cy]):-
     (Cy == Y2 , (Cx == X1 ; Cx == X3));
     (Cy == Y3 , (Cx == X2 ; Cx == X4));
     (Cy == Y4 , (Cx == X1 ; Cx == X3))).
-
-increment(X, X1, Qty):-
-    X1 is X+Qty.
-
-decrement(X, X1, Qty):-
-    X1 is X-Qty.
-
-
