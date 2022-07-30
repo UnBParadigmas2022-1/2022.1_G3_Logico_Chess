@@ -88,3 +88,31 @@ format_piece(Y, X, Letter) :-
         atom_chars(Cased, [Letter|_]
     ), !;
     Letter is 1.
+
+
+% map_list/3 -> Aplica na lista uma Func (regra) e retorna a lista de resultados
+map_list([], _, []).
+map_list([H|T], Func, [Ret|List]) :-
+    call(Func, H, Ret),
+    map_list(T, Func, List).
+
+
+% sum_list/2 -> Converte uma lista de atoms em um único atom.
+% Se forem números soma, se não concatena
+sum_list([X], X) :- !.
+sum_list([X, Y|T], Result) :-
+    atom(X), sum_list([Y|T], List),
+    atomic_concat(X, List, Result), !.
+sum_list([X, Y|T], Result) :-
+    (
+        (maplist(number, [X, Y]), New is X + Y), !;
+        (atom(Y), atomic_concat(X, Y, New))
+    ),
+    sum_list([New|T], Result).
+
+
+% format_rank/2 -> Converte uma única linha (rank) para Fen
+format_rank(X, Lines) :-
+    numlist(0, 7, Y),
+    map_list(Y, format_piece(X), Ranks),
+    sum_list(Ranks, Lines).
