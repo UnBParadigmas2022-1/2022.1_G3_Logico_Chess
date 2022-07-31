@@ -34,19 +34,26 @@ piece(queen, black, res_bq).
 piece(king, white, res_wk).
 piece(king, black, res_bk).
 
+% Create game mode titles
+gameModeTitle(1, 'Chess - Multiplayer Local', white).
+gameModeTitle(2, 'Chess - Multiplayer Cliente', black).
+gameModeTitle(3, 'Chess - Multiplayer Servidor', white).
+gameModeTitle(4, 'Chess - Computador', white).
 
-initGameGui(Game, Turn) :-
-    assert(turn(Turn)),
-    startGui(Game).
+
+initGameGui(GameMode, Game) :-
+    gameModeTitle(GameMode, Title, InitialTurn),
+    assert(turn(InitialTurn)),
+    startGui(Title, Game).
     
 
-startGui(Game) :-
+startGui(Title, Game) :-
     % Create custom colours
     new(@dark, colour(@default, 30583, 38293, 22102)),
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
-    new(Display, window('Chess', size(800,800))),
+    new(Display, window(Title, size(800,800))),
     drawBoard(Display, Game),
     drawPieces(Display),
     send(Display, open).
