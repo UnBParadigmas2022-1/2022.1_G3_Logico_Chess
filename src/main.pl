@@ -39,10 +39,34 @@ isCheckmate :-
     drawWarning('Xequemate!').
 
 
+moveRook([Sx, Sy, X, Y]) :-
+    Sx < X, !,
+    NewX is X-1,
+    removePiece(NewX, Y),
+    updateBoard([7, Sy, NewX, Y], PRef),
+    movePiece(PRef, NewX, Y).
+moveRook([Sx, Sy, X, Y]) :-
+    Sx > X, !,
+    NewX is X+1,
+    removePiece(NewX, Y),
+    updateBoard([0, Sy, NewX, Y], PRef),
+    movePiece(PRef, NewX, Y).
+
+
+applyCasting([Sx, _, X, Y]) :-
+    board(X, Y, Piece, _, _),
+    (Piece \= king; abs(Sx-X) =\= 2).
+applyCasting([Sx, Sy, X, Y]) :-
+    board(X, Y, Piece, _, _),
+    Piece == king, abs(Sx-X) =:= 2,
+    moveRook([Sx, Sy, X, Y]).
+
+
 applyMove(1, [Sx, Sy, X, Y]) :-
     removePiece(X, Y),
     updateBoard([Sx, Sy, X, Y], PRef),
     movePiece(PRef, X, Y),
+    applyCasting([Sx, Sy, X, Y]),
     turn(Turn),
     changeTurn(Turn).
 applyMove(2, PlayerMove) :-

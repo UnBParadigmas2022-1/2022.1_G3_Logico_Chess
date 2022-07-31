@@ -13,12 +13,10 @@ updateCastling(Turn, Castling) :-
 
 validateCastling(Turn, [Px, Py, Cx, Cy]) :-
     Px < Cx, castling(Turn, Castling),
-    writeln(Turn), writeln(Castling),
     member(short, Castling),
     isFreeWay([Px, Py, Cx, Cy], 1, 0).
 validateCastling(Turn, [Px, Py, Cx, Cy]) :-
     Px > Cx, castling(Turn, Castling),
-    writeln(Turn), writeln(Castling),
     member(long, Castling),
     isFreeWay([Px, Py, Cx, Cy], -1, 0).
 
