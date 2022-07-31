@@ -1,10 +1,23 @@
+:- consult(pieces/king).
+
+
+checkCastling(Turn, [7, _, _, _]) :-
+    castling(Turn, Castling), !,
+    delete(Castling, short, New),
+    updateCastling(Turn, New).
+checkCastling(Turn, [0, _, _, _]) :-
+    castling(Turn, Castling),
+    delete(Castling, long, New),
+    updateCastling(Turn, New).
+
 isRookMoveValid(_, [Px, Py, Px, Py]):- !, fail.
 isRookMoveValid(Turn, [_, _, Cx, Cy]):- board(Cx, Cy, _, Turn, _), !, fail.
 isRookMoveValid(Turn, Move):-
-    checkVerticalFront(Turn, Move);
+    (checkVerticalFront(Turn, Move);
     checkVerticalDown(Turn, Move);
     checkHorizontalRight(Turn, Move);
-    checkHorizontalLeft(Turn, Move).
+    checkHorizontalLeft(Turn, Move)),
+    checkCastling(Turn, Move).
 
 attack(Turn, [Px, Py, _, _]):-
     Turn == white, !,
