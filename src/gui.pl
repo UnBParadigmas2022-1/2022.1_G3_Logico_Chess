@@ -46,10 +46,23 @@ startGui(Game) :-
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
-    new(Display, window('Chess', size(800,800))),
+    new(Display, window('', size(800,800))),
+    drawMenuBar(Display),
     drawBoard(Display, Game),
     drawPieces(Display),
     send(Display, open).
+
+
+drawMenuBar(Display) :-
+    new(Frame, frame('Chess')),
+		send(Frame, append, new(Dialog, dialog('', size(800,30)))),
+        send(Dialog, display, new(@message, text(''))),
+        send(@message, center, Dialog?center),
+        send(Display, below, Dialog).
+
+
+drawMessage(Message) :-
+    send(@message, string, Message).
 
 
 drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
