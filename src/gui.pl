@@ -54,15 +54,35 @@ startGui(Game) :-
 
 
 drawMenuBar(Display) :-
+    new(@orange, colour(orange)),
+    new(@red, colour(red)),
+    new(@blue, colour(blue)),
+    new(@purple, colour(@default, 32767, 0, 65535)),
     new(Frame, frame('Chess')),
-		send(Frame, append, new(Dialog, dialog('', size(800,30)))),
-        send(Dialog, display, new(@message, text(''))),
-        send(@message, center, Dialog?center),
-        send(Display, below, Dialog).
+		send(Frame, append, new(@menu_bar, dialog('', size(800,60)))),
+        send(@menu_bar, display, new(@message, text(''))),
+        send(@message, font, font(times, bold, 18)),
+        send(@message, center, @menu_bar?center),
+        send(Display, below, @menu_bar).
 
 
-drawMessage(Message) :-
-    send(@message, string, Message).
+drawWarning(Message) :-
+    send(@message, string, Message),
+    send(@message, center, @menu_bar?center),
+    (get(@message, colour, @red),
+        send(@message, colour, @orange);
+        send(@message, colour, @red)
+    ).
+
+
+drawInform(Message) :-
+    send(@message, string, Message),
+        send(@message, center, @menu_bar?center),
+        (get(@message, colour, @blue),
+            send(@message, colour, @purple);
+            send(@message, colour, @blue)
+        ).
+
 
 
 drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
