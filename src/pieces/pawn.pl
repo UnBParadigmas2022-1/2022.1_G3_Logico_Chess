@@ -1,8 +1,9 @@
 isPawnMoveValid(Turn, Move):-
-    verifyPawnAttack(Turn, Move);
+    (verifyPawnAttack(Turn, Move);
     (verifyCollision(Move),
     (verifyFirstMove(Turn, Move);
-    isSimpleMoveValid(Turn, Move))).
+    isSimpleMoveValid(Turn, Move)))),
+    applyPromotion(Turn, Move).
 
 
 verifyCollision([_, _, Cx, Cy]):- not(board(Cx, Cy, _, _, _)).
@@ -42,3 +43,9 @@ verifyFirstMove(black, [Px, Py, Cx, Cy]):-
     verifyCollision([_, _, Px, Y1]),
     Cx == Px,
     Cy == Y2.
+
+
+applyPromotion(_, [X, Y, _, Cy]) :-
+    (Cy =:= 0 ; Cy =:= 7),
+    changePiece(X, Y, queen).
+applyPromotion(_, _).

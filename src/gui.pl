@@ -46,10 +46,43 @@ startGui(Game) :-
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
-    new(Display, window('Chess', size(800,800))),
+    new(Display, window('', size(800,800))),
+    drawMenuBar(Display),
     drawBoard(Display, Game),
     drawPieces(Display),
+    drawInform('Valendo!!!'),
     send(Display, open).
+
+
+drawMenuBar(Display) :-
+    new(@orange, colour(orange)),
+    new(@red, colour(red)),
+    new(@blue, colour(blue)),
+    new(@purple, colour(@default, 32767, 0, 65535)),
+    new(Frame, frame('Chess')),
+		send(Frame, append, new(@menu_bar, dialog('', size(800,60)))),
+        send(@menu_bar, display, new(@message, text(''))),
+        send(@message, font, font(times, bold, 18)),
+        send(@message, center, @menu_bar?center),
+        send(Display, below, @menu_bar).
+
+
+drawWarning(Message) :-
+    send(@message, string, Message),
+    send(@message, center, @menu_bar?center),
+    (get(@message, colour, @red),
+        send(@message, colour, @orange);
+        send(@message, colour, @red)
+    ).
+
+
+drawInform(Message) :-
+    send(@message, string, Message),
+        send(@message, center, @menu_bar?center),
+        (get(@message, colour, @blue),
+            send(@message, colour, @purple);
+            send(@message, colour, @blue)
+        ).
 
 
 drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
@@ -80,8 +113,8 @@ boxClickEvent(X, Y, Ref, Game) :-
     call(Game, X, Y, Turn, Ref).            % Call game to make the move
 
 
-changeTurn(white) :- retract(turn(_)), assert(turn(black)).
-changeTurn(black) :- retract(turn(_)), assert(turn(white)).
+changeTurn(white) :- retract(turn(_)), assert(turn(black)), drawInform('Turno das pretas!').
+changeTurn(black) :- retract(turn(_)), assert(turn(white)), drawInform('Turno das brancas!').
 
 
 selectBox(X, Y, Turn, Box) :-
@@ -104,6 +137,14 @@ removePiece(X, Y) :-
     board(X, Y, _, _, Ref), !,
     free(Ref).
 removePiece(_, _).
+
+
+changePiece(X, Y, NewPiece) :-
+    board(X, Y, _, Color, Ref),             % Get the box reference
+    retract(board(X, Y, _, _, _)),
+    assert(board(X, Y, NewPiece, Color, Ref)),
+    piece(NewPiece, Color, Res),            % Get the new piece image
+    send(Ref, image, bitmap(resource(Res))).
 
 
 drawBoxColor(Ref, X, Y) :-                  % Draw the correct box color with board/? coordinates
