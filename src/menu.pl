@@ -25,7 +25,7 @@ showMenu(Option) :-
     write('[1] - Multiplayer Local\n'),
     write('[2] - Multiplayer Cliente\n'),
     write('[3] - Multiplayer Servidor\n'),
-    write('[4] - Computador Local\n'),
+    write('[4] - Computador\n'),
     drawChar('#',60), nl,
     write('Escolha uma opcao:\n'),
     readMenuResponse(5, Option).
