@@ -1,10 +1,10 @@
-:- consult(board).
 :- consult(pieces/pawn).
 :- consult(pieces/knight).
 :- consult(pieces/bishop).
 :- consult(pieces/queen).
 :- consult(pieces/rook).
 :- consult(pieces/king).
+
 
 playerMove(Turn, [Sx, Sy, X, Y]) :-
     isPieceValid(Sx, Sy, Piece, Turn),

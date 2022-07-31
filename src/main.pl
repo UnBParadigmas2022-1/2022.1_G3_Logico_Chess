@@ -1,7 +1,9 @@
+:- consult(board).
+:- consult(gui).
 :- consult(menu).
 :- consult(move).
-:- consult(gui).
 :- consult(stockfish).
+:- consult(utils).
 
 :- dynamic(gamemode/1).     % gamemode(mode)
 

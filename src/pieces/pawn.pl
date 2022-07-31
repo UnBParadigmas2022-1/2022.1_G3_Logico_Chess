@@ -1,5 +1,3 @@
-:-consult(board).
-
 isPawnMoveValid(Turn, Move):-
     verifyPawnAttack(Turn, Move);
     (verifyCollision(Move),
@@ -33,13 +31,13 @@ verifyPawnAttack(black, [Px, Py, Cx, Cy]):-
 
 
 verifyFirstMove(white, [Px, Py, Cx, Cy]):-
-    board(Px, 1, pawn, white, _),
+    Py == 1,
     increment(Py, Y1, 1),increment(Py, Y2, 2),
     verifyCollision([_, _, Px, Y1]),
     Cx == Px,
     Cy == Y2.
 verifyFirstMove(black, [Px, Py, Cx, Cy]):-
-    board(Px, 6, pawn, black, _),
+    Py == 6,
     decrement(Py, Y1, 1),decrement(Py, Y2, 2),
     verifyCollision([_, _, Px, Y1]),
     Cx == Px,
