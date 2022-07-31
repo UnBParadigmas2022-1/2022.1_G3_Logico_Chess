@@ -45,7 +45,7 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     movePiece(PRef, X, Y),
     turn(Turn),
     changeTurn(Turn).
-applyMove(2, PlayerMove) :-
+applyMove(4, PlayerMove) :-
     applyMove(1, PlayerMove),
     turn(Turn), board_to_fen(Turn, Fen),
     start_stockfish(Stockfish, Out),
