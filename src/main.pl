@@ -13,8 +13,7 @@ main :-
     showMenu(GameMode),
     assert(gamemode(GameMode)),
     initSocketGame(GameMode),
-    initGameGui(GameMode, game),
-    waitServerFirstMove(GameMode, Move).
+    initGameGui(GameMode, game).
 
 
 game(X, Y, Turn, _) :-
@@ -49,7 +48,7 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     turn(Turn),
     changeTurn(Turn).
 applyMove(GameMode, PlayerMove) :-
-    (GameMode == 2; GameMode == 3), !,
+    (GameMode == 2; GameMode == 3),
     applyMove(1, PlayerMove),
     turn(Turn),
     sendPlayerSocketMove(Turn, PlayerMove).
