@@ -27,7 +27,13 @@ O motivo para a escolha desse tema, é em decorrência da complexidade por trás
 A ideia do projeto é baseada do projeto de um dos integrantes do grupo e de uma biblioteca Python que faz a conexão com o Stockfish: [chessGamer](https://gitlab.com/ensino_unb/EDAFGA/2020_1/grupo-1-ai/-/tree/feature/chessGame/src) e [stockfish](https://github.com/zhelyabuzhsky/stockfish)
 
 ## Screenshots
-Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcionamento.
+* Menu da Aplicação:
+
+![menu](https://user-images.githubusercontent.com/49499946/182047320-620b487a-1745-49e6-81a2-d3bb20d4cffb.png)
+
+* Tela do Jogo:
+
+![chessBoard](https://user-images.githubusercontent.com/49499946/182047209-65fea064-f314-4edc-8505-6d47c6f1a5f2.png)
 
 ## Instalação 
 **Linguagem**: [Prolog](https://www.swi-prolog.org/) <br>
