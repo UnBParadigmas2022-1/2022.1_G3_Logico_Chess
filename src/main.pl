@@ -2,6 +2,7 @@
 :- consult(gui).
 :- consult(menu).
 :- consult(move).
+:- consult(socket).
 :- consult(stockfish).
 :- consult(utils).
 
@@ -11,6 +12,7 @@
 main :-
     showMenu(GameMode),
     assert(gamemode(GameMode)),
+    initSocketGame(GameMode),
     initGameGui(game, white).
 
 
