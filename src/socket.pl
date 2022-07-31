@@ -1,17 +1,19 @@
 :- use_module(socket).
 
+:- consult(move).
+
 %  clients(Turn, Socket, StreamIn, StreamOut)
 :- dynamic(clients/4).
 
 
-initSocketGame(GameMode) :-
+initSocketGame(3) :-
+    write('\nInsira o IP do servidor:\n'),
+    read(Ip),
     write('\nInsira a porta do servidor:\n'),
     read(Port),
-    createServer(Port, AcceptFd),
-    acceptClient(AcceptFd, white),
-    GameMode == 2, !,
+    createServer(Ip, Port, AcceptFd),
     acceptClient(AcceptFd, black).
-initSocketGame(_) :- !.
+initSocketGame(_).
 
 
 prepareSocketTurn(Turn) :-
@@ -20,13 +22,13 @@ prepareSocketTurn(Turn) :-
     set_output(StreamOut).
 
 
-createServer(Port, AcceptFd) :- 
+createServer(Ip, Port, AcceptFd) :- 
     tcp_socket(Socket),
     tcp_setopt(Socket, reuseaddr),
-    tcp_bind(Socket, Port),
+    tcp_bind(Socket, Ip:Port),
     tcp_listen(Socket, 2),
     tcp_open_socket(Socket, AcceptFd, _),
-    format('Aguardando jogadores na porta ~d\n', Port).
+    format('Aguardando jogadores no endereço ~s:~s\n', [Ip, Port]).
 
 
 acceptClient(AcceptFd, Turn) :-
@@ -43,3 +45,16 @@ closeClients() :- findall(S, clients(_,S,_,_), L), closeClient(L).
 closeClient([]) :- !.
 closeClient([S]) :- tcp_close_socket(S).
 closeClient([H|T]) :- closeClient([H]), closeClient(T).
+
+
+readMove(Turn, Move) :-
+    format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
+    read(MoveReaded),
+    name(MoveReaded,MoveList),
+    isMoveFormatValid(MoveList), !,
+    parseMove(MoveList, Move).
+readMove(Turn, Move) :-
+    write('\nFormato de mensagem invalido!\n'),
+    write('Informe a posicao atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
+    write('Exemplo: e2f5\n'), flush_output(),
+    readMove(Turn, Move).
