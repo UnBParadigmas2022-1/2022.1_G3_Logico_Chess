@@ -37,6 +37,6 @@ applyMove(2, PlayerMove) :-
     applyMove(1, PlayerMove),
     turn(Turn), board_to_fen(Turn, Fen),
     start_stockfish(Stockfish, Out),
-    get_best_move(Stockfish, Out, Fen, 1000, StockfishMove),
+    get_best_move(Stockfish, Out, Fen, 100, StockfishMove),
     applyMove(1, StockfishMove),
     changeTurn(Turn).
