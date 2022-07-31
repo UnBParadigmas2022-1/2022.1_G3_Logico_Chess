@@ -1,11 +1,9 @@
-:-consult(board).
-
-
 isPawnMoveValid(Turn, Move):-
-    verifyPawnAttack(Turn, Move);
+    (verifyPawnAttack(Turn, Move);
     (verifyCollision(Move),
     (verifyFirstMove(Turn, Move);
-    isSimpleMoveValid(Turn, Move))).
+    isSimpleMoveValid(Turn, Move)))),
+    applyPromotion(Turn, Move).
 
 
 verifyCollision([_, _, Cx, Cy]):- not(board(Cx, Cy, _, _, _)).
@@ -34,14 +32,20 @@ verifyPawnAttack(black, [Px, Py, Cx, Cy]):-
 
 
 verifyFirstMove(white, [Px, Py, Cx, Cy]):-
-    board(Px, 1, pawn, white, _),
+    Py == 1,
     increment(Py, Y1, 1),increment(Py, Y2, 2),
     verifyCollision([_, _, Px, Y1]),
     Cx == Px,
     Cy == Y2.
 verifyFirstMove(black, [Px, Py, Cx, Cy]):-
-    board(Px, 6, pawn, black, _),
+    Py == 6,
     decrement(Py, Y1, 1),decrement(Py, Y2, 2),
     verifyCollision([_, _, Px, Y1]),
     Cx == Px,
     Cy == Y2.
+
+
+applyPromotion(_, [X, Y, _, Cy]) :-
+    (Cy =:= 0 ; Cy =:= 7),
+    changePiece(X, Y, queen).
+applyPromotion(_, _).

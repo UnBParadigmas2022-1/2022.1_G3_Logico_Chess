@@ -1,5 +1,3 @@
-:- consult(board).
-
 :- use_module(library(pce)).
 :- pce_image_directory('../assets').
 
@@ -40,6 +38,7 @@ piece(king, black, res_bk).
 initGameGui(Game, Turn) :-
     assert(turn(Turn)),
     startGui(Game).
+    
 
 startGui(Game) :-
     % Create custom colours
@@ -67,7 +66,7 @@ drawLine(_, X, _, Width, _) :- X == Width.
 drawLine(Display, X, Y, Width, Game) :-
     NewY is abs(Y-7),                       % Convert to board/? coordinates
     send(Display, display,
-        new(Ref, box(100,100)), point(X*100, Y*100)),
+        new(Ref, box(100,100)), point(X*100, Y*100)), 
     drawBoxColor(Ref, X, NewY),
     send(Ref, recogniser,                   % Call boxClickEvent on click
         click_gesture(left, '', single,
@@ -109,6 +108,8 @@ removePiece(_, _).
 
 changePiece(X, Y, NewPiece) :-
     board(X, Y, _, Color, Ref),             % Get the box reference
+    retract(board(X, Y, _, _, _)),
+    assert(board(X, Y, NewPiece, Color, Ref)),
     piece(NewPiece, Color, Res),            % Get the new piece image
     send(Ref, image, bitmap(resource(Res))).
 
@@ -134,4 +135,3 @@ drawPiece(Display, [[X,Y,Piece,Color]]) :-
 drawPiece(Display, [Head|Tail]) :-
     drawPiece(Display, [Head]),
     drawPiece(Display, Tail).
-

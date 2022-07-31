@@ -3,7 +3,6 @@
 :- dynamic board/3.
 :- dynamic board/2.
 
-
 % Initial pawn
 board(0, 1, pawn, white). %% a2
 board(0, 6, pawn, black). %% a7
@@ -49,9 +48,9 @@ board(4, 0, king, white). %% e1
 board(4, 7, king, black). %% e8
 
 
-updateBoard([Px, Py, Cx, Cy], Ref, Piece):-
+updateBoard([Px, Py, Cx, Cy], Ref):-
     board(Px, Py, Piece, Turn, Ref),
-    removePiece(board(Px, Py, _, _, _)),
+    removePiece(board(Px, Py, _, _, _)), 
     removePiece(board(Cx, Cy, _, _, _)),
     assert(board(Cx, Cy, Piece, Turn, Ref)).
 
