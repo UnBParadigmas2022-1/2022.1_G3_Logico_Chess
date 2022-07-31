@@ -32,9 +32,24 @@ Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcioname
 ## Instalação 
 **Linguagem**: [Prolog](https://www.swi-prolog.org/) <br>
 **Tecnologias**: xxxxxx<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
-Insira um manual ou um script para auxiliar ainda mais.
-Gifs animados e outras ilustrações são bem-vindos!
+
+## Pré-requisitos
+### Stockfish 15
+
+Para realizar a análise e avaliação do tabuleiro, foi utilizado um programa externo conhecido como Stockfish. Ele é responsável por calcular, e analisar a pontuação do tabuleiro em uma determinada jogada. A sua instalação deve ser feita da seguinte maneira (compilando da source):
+```bash
+# Clone o repositório do Stockfish
+$ git clone https://github.com/official-stockfish/Stockfish.git
+
+# Entre na pasta onde se encontra o Makefile
+$ cd Stockfish/src
+
+# Rode o comando make (instalação padrão)
+$ make -j build ARCH=x86-64
+
+# Adicione a pasta src no seu $PATH (temporário), pois lá que se encontra o executável
+$ export PATH="$PATH:pasta_do_stockfish/src"
+```
 
 ## Uso 
 Explique como usar seu projeto.
