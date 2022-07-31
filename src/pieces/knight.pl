@@ -1,6 +1,3 @@
-:-consult(board).
-:-consult(utils).
-
 isKnightMoveValid(Turn, Move):-
     isMoveValid(Move),
     (isSquareEmpty(Move);

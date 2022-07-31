@@ -1,5 +1,3 @@
-:- consult(board).
-
 :- use_module(library(pce)).
 :- pce_image_directory('../assets').
 
