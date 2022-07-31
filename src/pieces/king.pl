@@ -29,5 +29,4 @@ isKingMoveValid(Turn, [Px, Py, Cx, Cy]) :-
     updateCastling(Turn, []).
 isKingMoveValid(Turn, [Px, Py, Cx, Cy]) :-
     abs(Px-Cx) =:= 2, Py == Cy,
-    validateCastling(Turn, [Px, Py, Cx, Cy]),
-    updateCastling(Turn, []).
+    validateCastling(Turn, [Px, Py, Cx, Cy]).

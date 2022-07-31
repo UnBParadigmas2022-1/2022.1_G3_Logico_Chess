@@ -1,3 +1,6 @@
+:- consult(pieces/king).
+
+
 % start_stockfish/2 -> Cria pipes stdin e stdout para comunicação com o stockfish
 start_stockfish(Stockfish, Out) :-
     process_create(path(stockfish), [], [stdin(pipe(Stockfish)), stdout(pipe(Out))]).
@@ -74,6 +77,8 @@ get_evaluation(Stockfish, Out, Fen, Eval) :-
     nth0(7, ReverseLast, Eval).
 
 
+% is_check/3 -> Comando que chama representação visual, e obtem informação
+% se o jogador está em check ou não
 is_check(Stockfish, Out, Fen) :-
     set_fen_position(Stockfish, Fen),
     send_command(Stockfish, Out, 'd', Lines),
@@ -128,6 +133,21 @@ format_rank(X, Lines) :-
     sum_list(Ranks, Lines).
 
 
+% format_side/3 -> Converte um roque para uma letra específica
+format_side(Color, short, Letter) :- case_piece('K', Color, Letter).
+format_side(Color, long, Letter) :- case_piece('Q', Color, Letter).
+
+
+% format_castling/1 -> Converte as possibilidades de roque em uma string
+format_castling(Castling) :-
+    castling(white, White),
+    map_list(White, format_side(white), WhiteCastling),
+    castling(black, Black),
+    map_list(Black, format_side(black), BlackCastling),
+    append(WhiteCastling, BlackCastling, All),
+    atomics_to_string(All, "", Castling).
+
+
 % board_to_fen/2 -> Converte a base de dados board para uma posição Fen
 board_to_fen(Turn, Fen) :-
     numlist(0, 7, List),
@@ -135,4 +155,5 @@ board_to_fen(Turn, Fen) :-
     map_list(X, format_rank, Lines),
     atomics_to_string(Lines, "/", FenLines),
     atom_chars(Turn, [FenTurn|_]),
-    atomics_to_string([FenLines, FenTurn], " ", Fen).
+    format_castling(FenCastling),
+    atomics_to_string([FenLines, FenTurn, FenCastling], " ", Fen).

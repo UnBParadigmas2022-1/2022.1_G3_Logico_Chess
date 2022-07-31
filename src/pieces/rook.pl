@@ -6,9 +6,10 @@ checkCastling(Turn, [7, _, _, _]) :-
     delete(Castling, short, New),
     updateCastling(Turn, New).
 checkCastling(Turn, [0, _, _, _]) :-
-    castling(Turn, Castling),
+    castling(Turn, Castling), !,
     delete(Castling, long, New),
     updateCastling(Turn, New).
+checkCastling(_, [_, _, _, _]).
 
 isRookMoveValid(_, [Px, Py, Px, Py]):- !, fail.
 isRookMoveValid(Turn, [_, _, Cx, Cy]):- board(Cx, Cy, _, Turn, _), !, fail.
