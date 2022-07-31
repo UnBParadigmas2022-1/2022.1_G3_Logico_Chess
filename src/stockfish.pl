@@ -25,7 +25,7 @@ send_command(Stockfish, Command) :-
 
 send_command(Stockfish, Out, Command, Lines) :-
     send_command(Stockfish, Command),
-    sleep(1),
+    sleep(0.1),
     close_stream(Stockfish),
     read_output(Out, Lines).
 
@@ -56,12 +56,12 @@ get_best_move(Stockfish, Out, Fen, Time, Move) :-
     set_fen_position(Stockfish, Fen),
     atomics_to_string(['go', 'movetime', Time], " ", Command),
     send_command(Stockfish, Out, Command, Lines),
+    close_stockfish(Stockfish, Out),
     last(Lines, Line),
     split_string(Line, " ", "", Last),
     nth0(1, Last, String),
     name(String, MoveList),
-    parseMove(MoveList, Move),
-    close_stockfish(Stockfish, Out).
+    parseMove(MoveList, Move).
 
 
 % get_evaluation/4 -> Comando que calcula a vantagem no jogo, de
@@ -69,12 +69,22 @@ get_best_move(Stockfish, Out, Fen, Time, Move) :-
 get_evaluation(Stockfish, Out, Fen, Eval) :-
     set_fen_position(Stockfish, Fen),
     send_command(Stockfish, Out, 'eval', Lines),
+    close_stockfish(Stockfish, Out),
     reverse(Lines, ReverseLines),
     nth0(1, ReverseLines, Line),
     split_string(Line, " ", "", Last),
     reverse(Last, ReverseLast),
-    nth0(7, ReverseLast, Eval),
-    close_stockfish(Stockfish, Out).
+    nth0(7, ReverseLast, Eval).
+
+
+is_check(Stockfish, Out, Fen) :-
+    set_fen_position(Stockfish, Fen),
+    send_command(Stockfish, Out, 'd', Lines),
+    close_stockfish(Stockfish, Out),
+    last(Lines, Line),
+    split_string(Line, " ", "", Last),
+    length(Last, Checker),
+    Checker \= 2.
 
 
 % case_piece/3 -> Retorna se é upper ou down case o atom da peça

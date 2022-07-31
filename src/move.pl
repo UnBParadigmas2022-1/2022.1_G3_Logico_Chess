@@ -8,7 +8,8 @@
 
 playerMove(Turn, [Sx, Sy, X, Y]) :-
     isPieceValid(Sx, Sy, Piece, Turn),
-    isMoveValid(Turn, [Sx, Sy, X, Y], Piece).
+    isMoveValid(Turn, [Sx, Sy, X, Y], Piece),
+    \+isCheck(Turn, [Sx, Sy, X, Y]).
 
 
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
@@ -17,6 +18,22 @@ isMoveValid(Turn, Move, bishop) :- isBishopMoveValid(Turn, Move).
 isMoveValid(Turn, Move, queen) :- isQueenMoveValid(Turn, Move).
 isMoveValid(Turn, Move, rook) :- isRookMoveValid(Turn, Move).
 isMoveValid(Turn, Move, king) :- isKingMoveValid(Turn, Move).
+
+invertLocalTurn(white, black).
+invertLocalTurn(black, white).
+
+
+snapshotMove(Move, Turn, Fen) :-
+    updateBoard(Move, _),
+    board_to_fen(Turn, Fen).
+
+
+isCheck(Turn, Move) :-
+    snapshot(snapshotMove(Move, Turn, Fen)),
+    start_stockfish(Stockfish, Out),
+    is_check(Stockfish, Out, Fen),
+    writeln('Posicao invalida, o jogar esta em check!').
+
 
 readMove(Turn, Move) :-
     format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
@@ -31,6 +48,7 @@ readMove(Turn, Move) :-
     readMove(Turn, Move).
 
 
+parseMove([40|_], Move) :- Move = [40].
 parseMove([A,B,C,D], Move) :-
     AA is A-97, BB is B-49,
     CC is C-97, DD is D-49,

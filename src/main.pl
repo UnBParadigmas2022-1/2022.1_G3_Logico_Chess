@@ -19,7 +19,8 @@ game(X, Y, Turn, _) :-
     playerMove(Turn, [Sx, Sy, X, Y]), !,
     gamemode(Gamemode),
     applyMove(Gamemode, [Sx, Sy, X, Y]),
-    deselectBox(Sx, Sy, SRef).
+    deselectBox(Sx, Sy, SRef),
+    \+isCheckmate.
 game(X, Y, Turn, Ref) :-
     isPieceValid(X, Y, _, Turn),
     not(selected(_, _, _, _)),
@@ -27,6 +28,15 @@ game(X, Y, Turn, Ref) :-
 game(_, _, _, _) :-
     selected(Sx, Sy, SRef, _),
     deselectBox(Sx, Sy, SRef).
+
+
+isCheckmate :-
+    turn(Turn),
+    board_to_fen(Turn, Fen),
+    start_stockfish(Stockfish, Out),
+    get_best_move(Stockfish, Out, Fen, 1, [Move|_]),
+    Move == 40,
+    format('Checkmate, vitoria do jogador ~a\n', Turn).
 
 
 applyMove(1, [Sx, Sy, X, Y]) :-
@@ -39,6 +49,6 @@ applyMove(2, PlayerMove) :-
     applyMove(1, PlayerMove),
     turn(Turn), board_to_fen(Turn, Fen),
     start_stockfish(Stockfish, Out),
-    get_best_move(Stockfish, Out, Fen, 1000, StockfishMove),
+    get_best_move(Stockfish, Out, Fen, 100, StockfishMove),
     applyMove(1, StockfishMove),
     changeTurn(Turn).
