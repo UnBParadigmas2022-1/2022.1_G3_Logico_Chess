@@ -36,7 +36,7 @@ isCheckmate :-
     start_stockfish(Stockfish, Out),
     get_best_move(Stockfish, Out, Fen, 1, [Move|_]),
     Move == 40,
-    format('Checkmate, vitoria do jogador ~a\n', Turn).
+    drawWarning('Xequemate!').
 
 
 applyMove(1, [Sx, Sy, X, Y]) :-
