@@ -47,6 +47,12 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     movePiece(PRef, X, Y),
     turn(Turn),
     changeTurn(Turn).
+applyMove(3, PlayerMove) :-
+    applyMove(1, PlayerMove),
+    turn(Turn),
+    playerSocketMove(Turn, PlayerMove, SocketMove),
+    applyMove(1, SocketMove),
+    changeTurn(Turn).
 applyMove(4, PlayerMove) :-
     applyMove(1, PlayerMove),
     turn(Turn), board_to_fen(Turn, Fen),
