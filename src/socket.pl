@@ -19,14 +19,13 @@ initSocketGame(3) :-
     % read(Port),
     createServer(localhost, 2503, AcceptFd),
     acceptClient(AcceptFd, black).
-    % prepareSocketTurn(black).
 initSocketGame(_).
 
 
-% prepareSocketTurn(Turn) :-
-%     clients(Turn, _, StreamIn, StreamOut),
-%     set_input(StreamIn),
-%     set_output(StreamOut).
+prepareSocketTurn(Turn) :-
+    clients(Turn, _, StreamIn, StreamOut),
+    set_input(StreamIn),
+    set_output(StreamOut).
 
 
 createServer(Ip, Port, AcceptFd) :- 
@@ -42,10 +41,7 @@ createClient(Ip, Port) :-
     tcp_socket(Socket),
     tcp_connect(Socket, Ip:Port),
     tcp_open_socket(Socket, StreamIn, StreamOut),
-    set_input(StreamIn),
-    set_output(StreamOut),
-    writeln([StreamIn, StreamOut]).
-    % read_pending_codes(StreamIn, _, _).
+    assert(clients(white, Socket, StreamIn, StreamOut)).
 
 
 acceptClient(AcceptFd, Turn) :-
@@ -53,10 +49,7 @@ acceptClient(AcceptFd, Turn) :-
     tcp_accept(AcceptFd, Socket, _),
     tcp_open_socket(Socket, StreamIn, StreamOut),
     format('Jogador[~s]: Conectado\n', Turn),
-    assert(clients(Turn, Socket, StreamIn, StreamOut)),
-    set_input(StreamIn),
-    set_output(StreamOut).
-    % read_pending_codes(StreamIn, _, _).
+    assert(clients(Turn, Socket, StreamIn, StreamOut)).
 
 
 closeClients() :- findall(S, clients(_,S,_,_), L), closeClient(L).
@@ -67,42 +60,22 @@ closeClient([S]) :- tcp_close_socket(S).
 closeClient([H|T]) :- closeClient([H]), closeClient(T).
 
 
-readMove(Turn, Move) :-
-    format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
-    read(MoveReaded),
-    name(MoveReaded,MoveList),
-    isMoveFormatValid(MoveList), !,
-    parseMove(MoveList, Move).
-readMove(Turn, Move) :-
-    write('\nFormato de mensagem invalido!\n'),
-    write('Informe a posicao atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
-    write('Exemplo: e2f5\n'), flush_output(),
-    readMove(Turn, Move).
+waitServerFirstMove(2, Move) :-
+    read_pending_codes(current_input, _, _),
+    readSocketMove(Move),
+    applyMove(1, Move).
+waitServerFirstMove(_, _).
 
 
-playerSocketMove(white, PlayerMove, SocketMove) :-
-    read_pending_codes(current_input, _, _),
-    invertLocalTurn(white, LocalPlayerTurn),
-    % prepareSocketTurn(Turn),
+readSocketMove(Move) :-
+    prepareSocketTurn(white),
+    read_line_to_codes(current_input, MoveReaded),
+    parseMove(MoveReaded, Move),
+    writeln(user_output, ['Recebendo', MoveReaded]).
+
+
+sendPlayerSocketMove(Turn, PlayerMove) :-
+    prepareSocketTurn(Turn),
     deparseMove(PlayerMove, Move),
-    writeln(user_output, Move),
-    writeln(Move), flush_output(),
-    read_line_to_codes(current_input,Cs),
-    % atom_codes(SocketResponseMove, Cs),
-    writeln(user_output, Cs),
-    % name(SocketResponseMove, SocketMoveList),
-    % writeln(user_output, SocketMoveList),
-    parseMove(Cs, SocketMove).
-playerSocketMove(black, PlayerMove, SocketMove) :-
-    read_pending_codes(current_input, _, _),
-    invertLocalTurn(black, LocalPlayerTurn),
-    % prepareSocketTurn(Turn),
-    deparseMove(PlayerMove, Move),
-    read_line_to_codes(current_input,Cs),
-    writeln(user_output, Move),
-    writeln(Move), flush_output(),
-    % atom_codes(SocketResponseMove, Cs),
-    writeln(user_output, Cs),
-    % name(SocketResponseMove, SocketMoveList),
-    % writeln(user_output, SocketMoveList),
-    parseMove(Cs, SocketMove).
+    writeln(user_output, ['Enviando ', Move]),
+    writeln(Move), flush_output().

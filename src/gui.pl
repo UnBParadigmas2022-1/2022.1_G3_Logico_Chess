@@ -35,15 +35,15 @@ piece(king, white, res_wk).
 piece(king, black, res_bk).
 
 % Create game mode titles
-gameModeTitle(1, 'Chess - Multiplayer Local', white).
-gameModeTitle(2, 'Chess - Multiplayer Cliente', black).
-gameModeTitle(3, 'Chess - Multiplayer Servidor', white).
-gameModeTitle(4, 'Chess - Computador', white).
+gameModeTitle(1, 'Chess - Multiplayer Local').
+gameModeTitle(2, 'Chess - Multiplayer Cliente').
+gameModeTitle(3, 'Chess - Multiplayer Servidor').
+gameModeTitle(4, 'Chess - Computador').
 
 
 initGameGui(GameMode, Game) :-
-    gameModeTitle(GameMode, Title, InitialTurn),
-    assert(turn(InitialTurn)),
+    gameModeTitle(GameMode, Title),
+    assert(turn(white)),
     startGui(Title, Game).
     
 
