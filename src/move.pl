@@ -10,7 +10,7 @@
 playerMove(Turn, [Sx, Sy, X, Y]) :-
     isPieceValid(Sx, Sy, Piece, Turn),
     isMoveValid(Turn, [Sx, Sy, X, Y], Piece),
-    \+isNotCheck(Turn, [Sx, Sy, X, Y]).
+    \+isCheck(Turn, [Sx, Sy, X, Y]).
 
 
 isMoveValid(Turn, Move, pawn) :- isPawnMoveValid(Turn, Move).
@@ -29,7 +29,7 @@ snapshotMove(Move, Turn, Fen) :-
     board_to_fen(Turn, Fen).
 
 
-isNotCheck(Turn, Move) :-
+isCheck(Turn, Move) :-
     snapshot(snapshotMove(Move, Turn, Fen)),
     start_stockfish(Stockfish, Out),
     is_check(Stockfish, Out, Fen),
@@ -49,6 +49,7 @@ readMove(Turn, Move) :-
     readMove(Turn, Move).
 
 
+parseMove([40|_], Move) :- Move = [40].
 parseMove([A,B,C,D], Move) :-
     AA is A-97, BB is B-49,
     CC is C-97, DD is D-49,
