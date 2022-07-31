@@ -1,5 +1,3 @@
-:-consult(board).
-
 isPawnMoveValid(Turn, Move):-
     verifyPawnAttack(Turn, Move);
     (verifyCollision(Move),

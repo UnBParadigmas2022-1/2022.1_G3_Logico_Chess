@@ -1,6 +1,3 @@
-:-consult(board).
-:-consult(utils).
-
 isRookMoveValid(_, [Px, Py, Px, Py]):- !, fail.
 isRookMoveValid(Turn, [_, _, Cx, Cy]):- board(Cx, Cy, _, Turn, _), !, fail.
 isRookMoveValid(Turn, Move):-
@@ -84,5 +81,3 @@ isEmptyHorizontalLeft(Turn, [X1, Py, Cx, Cy]):-
     X1 == Cx,
     Py == Cy;
     attack(Turn, [X1, Py, Cx, Cy]).
-
-
