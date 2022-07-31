@@ -6,20 +6,27 @@
 :- dynamic(clients/4).
 
 
+initSocketGame(2) :-
+    % write('\nInsira o IP do servidor:\n'),
+    % read(Ip),
+    % write('\nInsira a porta do servidor:\n'),
+    % read(Port),
+    createClient(localhost, 2503).
 initSocketGame(3) :-
-    write('\nInsira o IP do servidor:\n'),
-    read(Ip),
-    write('\nInsira a porta do servidor:\n'),
-    read(Port),
-    createServer(Ip, Port, AcceptFd),
+    % write('\nInsira o IP do servidor:\n'),
+    % read(Ip),
+    % write('\nInsira a porta do servidor:\n'),
+    % read(Port),
+    createServer(localhost, 2503, AcceptFd),
     acceptClient(AcceptFd, black).
+    % prepareSocketTurn(black).
 initSocketGame(_).
 
 
-prepareSocketTurn(Turn) :-
-    clients(Turn, _, StreamIn, StreamOut),
-    set_input(StreamIn),
-    set_output(StreamOut).
+% prepareSocketTurn(Turn) :-
+%     clients(Turn, _, StreamIn, StreamOut),
+%     set_input(StreamIn),
+%     set_output(StreamOut).
 
 
 createServer(Ip, Port, AcceptFd) :- 
@@ -31,12 +38,25 @@ createServer(Ip, Port, AcceptFd) :-
     format('Aguardando jogadores no endereço ~s:~d\n', [Ip, Port]).
 
 
+createClient(Ip, Port) :-
+    tcp_socket(Socket),
+    tcp_connect(Socket, Ip:Port),
+    tcp_open_socket(Socket, StreamIn, StreamOut),
+    set_input(StreamIn),
+    set_output(StreamOut),
+    writeln([StreamIn, StreamOut]).
+    % read_pending_codes(StreamIn, _, _).
+
+
 acceptClient(AcceptFd, Turn) :-
     format('Jogador[~s]: Aguardando conexão\n', Turn),
     tcp_accept(AcceptFd, Socket, _),
     tcp_open_socket(Socket, StreamIn, StreamOut),
     format('Jogador[~s]: Conectado\n', Turn),
-    assert(clients(Turn, Socket, StreamIn, StreamOut)).
+    assert(clients(Turn, Socket, StreamIn, StreamOut)),
+    set_input(StreamIn),
+    set_output(StreamOut).
+    % read_pending_codes(StreamIn, _, _).
 
 
 closeClients() :- findall(S, clients(_,S,_,_), L), closeClient(L).
@@ -60,12 +80,29 @@ readMove(Turn, Move) :-
     readMove(Turn, Move).
 
 
-playerSocketMove(Turn, PlayerMove, SocketMove) :-
-    invertLocalTurn(Turn, LocalPlayerTurn),
-    prepareSocketTurn(Turn),
+playerSocketMove(white, PlayerMove, SocketMove) :-
+    read_pending_codes(current_input, _, _),
+    invertLocalTurn(white, LocalPlayerTurn),
+    % prepareSocketTurn(Turn),
     deparseMove(PlayerMove, Move),
-    writeln(PlayerMove), flush_output(),
-    read(SocketResponseMove),
-    writeln(user_output, SocketResponseMove),
-    name(SocketResponseMove, SocketMoveList),
-    parseMove(SocketMoveList, SocketMove).
+    writeln(user_output, Move),
+    writeln(Move), flush_output(),
+    read_line_to_codes(current_input,Cs),
+    % atom_codes(SocketResponseMove, Cs),
+    writeln(user_output, Cs),
+    % name(SocketResponseMove, SocketMoveList),
+    % writeln(user_output, SocketMoveList),
+    parseMove(Cs, SocketMove).
+playerSocketMove(black, PlayerMove, SocketMove) :-
+    read_pending_codes(current_input, _, _),
+    invertLocalTurn(black, LocalPlayerTurn),
+    % prepareSocketTurn(Turn),
+    deparseMove(PlayerMove, Move),
+    read_line_to_codes(current_input,Cs),
+    writeln(user_output, Move),
+    writeln(Move), flush_output(),
+    % atom_codes(SocketResponseMove, Cs),
+    writeln(user_output, Cs),
+    % name(SocketResponseMove, SocketMoveList),
+    % writeln(user_output, SocketMoveList),
+    parseMove(Cs, SocketMove).

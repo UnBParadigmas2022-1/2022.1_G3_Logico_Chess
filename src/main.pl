@@ -13,7 +13,7 @@ main :-
     showMenu(GameMode),
     assert(gamemode(GameMode)),
     initSocketGame(GameMode),
-    initGameGui(game, white).
+    initGameGui(GameMode, game).
 
 
 game(X, Y, Turn, _) :-
@@ -47,10 +47,18 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     movePiece(PRef, X, Y),
     turn(Turn),
     changeTurn(Turn).
+applyMove(2, PlayerMove) :-
+    applyMove(1, PlayerMove),
+    turn(Turn),
+    playerSocketMove(Turn, PlayerMove, SocketMove),
+    writeln(user_output, SocketMove),
+    applyMove(1, SocketMove),
+    changeTurn(Turn).
 applyMove(3, PlayerMove) :-
     applyMove(1, PlayerMove),
     turn(Turn),
     playerSocketMove(Turn, PlayerMove, SocketMove),
+    writeln(user_output, SocketMove),
     applyMove(1, SocketMove),
     changeTurn(Turn).
 applyMove(4, PlayerMove) :-
