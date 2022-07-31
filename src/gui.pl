@@ -106,6 +106,14 @@ removePiece(X, Y) :-
 removePiece(_, _).
 
 
+changePiece(X, Y, NewPiece) :-
+    board(X, Y, _, Color, Ref),             % Get the box reference
+    retract(board(X, Y, _, _, _)),
+    assert(board(X, Y, NewPiece, Color, Ref)),
+    piece(NewPiece, Color, Res),            % Get the new piece image
+    send(Ref, image, bitmap(resource(Res))).
+
+
 drawBoxColor(Ref, X, Y) :-                  % Draw the correct box color with board/? coordinates
     mod(X, 2) =:= mod(Y, 2),
     send(Ref, fill_pattern, @dark);
