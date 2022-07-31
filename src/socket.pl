@@ -28,7 +28,7 @@ createServer(Ip, Port, AcceptFd) :-
     tcp_bind(Socket, Ip:Port),
     tcp_listen(Socket, 2),
     tcp_open_socket(Socket, AcceptFd, _),
-    format('Aguardando jogadores no endereço ~s:~s\n', [Ip, Port]).
+    format('Aguardando jogadores no endereço ~s:~d\n', [Ip, Port]).
 
 
 acceptClient(AcceptFd, Turn) :-
@@ -58,3 +58,14 @@ readMove(Turn, Move) :-
     write('Informe a posicao atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
     write('Exemplo: e2f5\n'), flush_output(),
     readMove(Turn, Move).
+
+
+playerSocketMove(Turn, PlayerMove, SocketMove) :-
+    invertLocalTurn(Turn, LocalPlayerTurn),
+    prepareSocketTurn(Turn),
+    deparseMove(PlayerMove, Move),
+    writeln(PlayerMove), flush_output(),
+    read(SocketResponseMove),
+    writeln(user_output, SocketResponseMove),
+    name(SocketResponseMove, SocketMoveList),
+    parseMove(SocketMoveList, SocketMove).
