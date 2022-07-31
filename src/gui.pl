@@ -50,6 +50,7 @@ startGui(Game) :-
     drawMenuBar(Display),
     drawBoard(Display, Game),
     drawPieces(Display),
+    drawInform('Valendo!!!'),
     send(Display, open).
 
 
@@ -84,7 +85,6 @@ drawInform(Message) :-
         ).
 
 
-
 drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
 
 
@@ -113,8 +113,8 @@ boxClickEvent(X, Y, Ref, Game) :-
     call(Game, X, Y, Turn, Ref).            % Call game to make the move
 
 
-changeTurn(white) :- retract(turn(_)), assert(turn(black)).
-changeTurn(black) :- retract(turn(_)), assert(turn(white)).
+changeTurn(white) :- retract(turn(_)), assert(turn(black)), drawInform('Turno das pretas!').
+changeTurn(black) :- retract(turn(_)), assert(turn(white)), drawInform('Turno das brancas!').
 
 
 selectBox(X, Y, Turn, Box) :-
