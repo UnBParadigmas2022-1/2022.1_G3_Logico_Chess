@@ -82,8 +82,11 @@ $ export PATH="$PATH:pasta_do_stockfish/src"
 
 Para utilizar o projeto é necessário estar com o prolog e o Stockfish instalados e no path do terminal. Com isso feito, e considerando que esteja na raiz do projeto, basta executar os seguintes comandos:
 ```bash
+# Clone do projeto
+git clone https://github.com/UnBParadigmas2022-1/2022.1_G3_Logico_Chess.git
+
 # Entre na pasta onde se encontram os arquivos .pl
-$ cd src/
+$ cd /2022.1_G3_Logico_Chess/src/
 
 # Entrando no interpretador do swipl
 $ swipl main.pl
@@ -140,3 +143,5 @@ Diversas alterações e melhorias ainda podem ser feitas, e a equipe separou alg
 
 ## Fontes
 - Insipirado em: chessGame. Disponível em: <https://gitlab.com/ensino_unb/EDAFGA/2020_1/grupo-1-ai/-/tree/feature/chessGame/src>
+- Documentação do Prolog. Disponível em: <https://www.swi-prolog.org/>
+- Bramer, M. A. [Logic Programming with Prolog](https://www.amazon.com.br/Logic-Programming-PROLOG-Max-Bramer-dp-144715486X/dp/144715486X/ref=dp_ob_title_bk). New York: Springer, 2013. 
