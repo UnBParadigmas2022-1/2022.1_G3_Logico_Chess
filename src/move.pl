@@ -35,24 +35,21 @@ isCheck(Turn, Move) :-
     writeln('Posicao invalida, o jogar esta em check!').
 
 
-readMove(Turn, Move) :-
-    format('\nJogador[~s]: Insira sua jogada:\n', Turn), flush_output(),
-    read(MoveReaded),
-    name(MoveReaded,MoveList),
-    isMoveFormatValid(MoveList), !,
-    parseMove(MoveList, Move).
-readMove(Turn, Move) :-
-    write('\nFormato de mensagem invalido!\n'),
-    write('Informe a posicao atual e pra onde quer ir no seguinte formato: OrigemDestino!\n'),
-    write('Exemplo: e2f5\n'), flush_output(),
-    readMove(Turn, Move).
-
-
 parseMove([40|_], Move) :- Move = [40].
 parseMove([A,B,C,D], Move) :-
     AA is A-97, BB is B-49,
     CC is C-97, DD is D-49,
     Move = [AA, BB, CC, DD].
+
+
+deparseMove([A,B,C,D], Move) :-
+    AA is A+97, BB is B+49,
+    CC is C+97, DD is D+49,
+    char_code(Sox, AA),
+    char_code(Soy, BB),
+    char_code(Sdx, CC),
+    char_code(Sdy, DD),
+    atomics_to_string([Sox, Soy, Sdx, Sdy], Move).
 
 
 isLetterValid(Letter) :- Letter >= 97, Letter =< 104.       % 'a' <= Letter <= 'h'

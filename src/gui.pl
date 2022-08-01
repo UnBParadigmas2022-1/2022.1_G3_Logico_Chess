@@ -3,7 +3,6 @@
 
 
 :- dynamic(selected/4). % selected(X, Y, Ref, Turn)
-:- dynamic(turn/1).     % turn(Turn)
 
 
 % Load pictures
@@ -34,32 +33,38 @@ piece(queen, black, res_bq).
 piece(king, white, res_wk).
 piece(king, black, res_bk).
 
+% Create game mode titles
+gameModeTitle(1, 'Chess - Multiplayer Local').
+gameModeTitle(2, 'Chess - Multiplayer Cliente').
+gameModeTitle(3, 'Chess - Multiplayer Servidor').
+gameModeTitle(4, 'Chess - Computador').
 
-initGameGui(Game, Turn) :-
-    assert(turn(Turn)),
-    startGui(Game).
+
+initGameGui(GameMode, BoxClickEvent) :-
+    gameModeTitle(GameMode, Title),
+    startGui(Title, BoxClickEvent).
     
 
-startGui(Game) :-
+startGui(Title, BoxClickEvent) :-
     % Create custom colours
     new(@dark, colour(@default, 30583, 38293, 22102)),
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
-    new(Display, window('', size(800,800))),
-    drawMenuBar(Display),
-    drawBoard(Display, Game),
+    new(Display, window(Title, size(800,800))),
+    drawMenuBar(Display, Title),
+    drawBoard(Display, BoxClickEvent),
     drawPieces(Display),
     drawInform('Valendo!!!'),
     send(Display, open).
 
 
-drawMenuBar(Display) :-
+drawMenuBar(Display, Title) :-
     new(@orange, colour(orange)),
     new(@red, colour(red)),
     new(@blue, colour(blue)),
     new(@purple, colour(@default, 32767, 0, 65535)),
-    new(Frame, frame('Chess')),
+    new(Frame, frame(Title)),
 		send(Frame, append, new(@menu_bar, dialog('', size(800,60)))),
         send(@menu_bar, display, new(@message, text(''))),
         send(@message, font, font(times, bold, 18)),
@@ -85,36 +90,27 @@ drawInform(Message) :-
         ).
 
 
-drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
+drawBoard(Display, BoxClickEvent) :- draw(Display, 8, 8, 0, BoxClickEvent).
 
 
 draw(_, _, Height, Y, _) :- Y == Height.
-draw(Display, Width, Height, Y, Game) :-
-    drawLine(Display, 0, Y, Width, Game),
+draw(Display, Width, Height, Y, BoxClickEvent) :-
+    drawLine(Display, 0, Y, Width, BoxClickEvent),
     plus(Y,1,YY),                           % Next row
-    draw(Display, Width, Height, YY, Game).
+    draw(Display, Width, Height, YY, BoxClickEvent).
 
 
 drawLine(_, X, _, Width, _) :- X == Width.
-drawLine(Display, X, Y, Width, Game) :-
+drawLine(Display, X, Y, Width, BoxClickEvent) :-
     NewY is abs(Y-7),                       % Convert to board/? coordinates
     send(Display, display,
         new(Ref, box(100,100)), point(X*100, Y*100)), 
     drawBoxColor(Ref, X, NewY),
     send(Ref, recogniser,                   % Call boxClickEvent on click
         click_gesture(left, '', single,
-            message(@prolog, boxClickEvent, X, NewY, Ref, Game))),
+            message(@prolog, BoxClickEvent, X, NewY, Ref))),
     plus(X,1,XX),                           % Next column
-    drawLine(Display, XX, Y, Width, Game).
-
-
-boxClickEvent(X, Y, Ref, Game) :-
-    turn(Turn),                             % Get current turn (white or black)
-    call(Game, X, Y, Turn, Ref).            % Call game to make the move
-
-
-changeTurn(white) :- retract(turn(_)), assert(turn(black)), drawInform('Turno das pretas!').
-changeTurn(black) :- retract(turn(_)), assert(turn(white)), drawInform('Turno das brancas!').
+    drawLine(Display, XX, Y, Width, BoxClickEvent).
 
 
 selectBox(X, Y, Turn, Box) :-
