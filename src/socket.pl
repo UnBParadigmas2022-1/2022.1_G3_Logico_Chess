@@ -9,20 +9,20 @@ gamemodeTurnEnemy(2, white).
 gamemodeTurnEnemy(3, black).
 
 initSocketGame(2) :-
-    % write('\nInsira o IP do servidor:\n'),
-    % read(Ip),
-    % write('\nInsira a porta do servidor:\n'),
-    % read(Port),
+    write('\nInsira o IP do servidor:\n'),
+    read(Ip),
+    write('\nInsira a porta do servidor:\n'),
+    read(Port),
     gamemodeTurnEnemy(2, Enemy),
-    createClient(localhost, 2503, Enemy),
+    createClient(Ip, Port, Enemy),
     thread_create(receiveSocketMove, _).
 initSocketGame(3) :-
-    % write('\nInsira o IP do servidor:\n'),
-    % read(Ip),
-    % write('\nInsira a porta do servidor:\n'),
-    % read(Port),
+    write('\nInsira o IP do servidor:\n'),
+    read(Ip),
+    write('\nInsira a porta do servidor:\n'),
+    read(Port),
     gamemodeTurnEnemy(3, Enemy),
-    createServer(localhost, 2503, AcceptFd),
+    createServer(Ip, Port, AcceptFd),
     acceptClient(AcceptFd, Enemy),
     thread_create(receiveSocketMove, _).
 initSocketGame(_).

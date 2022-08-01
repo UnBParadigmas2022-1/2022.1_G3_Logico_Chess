@@ -3,7 +3,6 @@
 
 
 :- dynamic(selected/4). % selected(X, Y, Ref, Turn)
-:- dynamic(turn/1).     % turn(Turn)
 
 
 % Load pictures
@@ -41,55 +40,44 @@ gameModeTitle(3, 'Chess - Multiplayer Servidor').
 gameModeTitle(4, 'Chess - Computador').
 
 
-initGameGui(GameMode, Game) :-
+initGameGui(GameMode, BoxClickEvent) :-
     gameModeTitle(GameMode, Title),
-    assert(turn(white)),
-    startGui(Title, Game).
+    startGui(Title, BoxClickEvent).
     
 
-startGui(Title, Game) :-
+startGui(Title, BoxClickEvent) :-
     % Create custom colours
     new(@dark, colour(@default, 30583, 38293, 22102)),
     new(@light, colour(@default, 60395, 60652, 53456)),
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
     new(Display, window(Title, size(800,800))),
-    drawBoard(Display, Game),
+    drawBoard(Display, BoxClickEvent),
     drawPieces(Display),
     send(Display, open).
 
 
-drawBoard(Display, Game) :- draw(Display, 8, 8, 0, Game).
+drawBoard(Display, BoxClickEvent) :- draw(Display, 8, 8, 0, BoxClickEvent).
 
 
 draw(_, _, Height, Y, _) :- Y == Height.
-draw(Display, Width, Height, Y, Game) :-
-    drawLine(Display, 0, Y, Width, Game),
+draw(Display, Width, Height, Y, BoxClickEvent) :-
+    drawLine(Display, 0, Y, Width, BoxClickEvent),
     plus(Y,1,YY),                           % Next row
-    draw(Display, Width, Height, YY, Game).
+    draw(Display, Width, Height, YY, BoxClickEvent).
 
 
 drawLine(_, X, _, Width, _) :- X == Width.
-drawLine(Display, X, Y, Width, Game) :-
+drawLine(Display, X, Y, Width, BoxClickEvent) :-
     NewY is abs(Y-7),                       % Convert to board/? coordinates
     send(Display, display,
         new(Ref, box(100,100)), point(X*100, Y*100)), 
     drawBoxColor(Ref, X, NewY),
     send(Ref, recogniser,                   % Call boxClickEvent on click
         click_gesture(left, '', single,
-            message(@prolog, boxClickEvent, X, NewY, Ref, Game))),
+            message(@prolog, BoxClickEvent, X, NewY, Ref))),
     plus(X,1,XX),                           % Next column
-    drawLine(Display, XX, Y, Width, Game).
-
-
-boxClickEvent(X, Y, Ref, Game) :-
-    turn(Turn),                             % Get current turn (white or black)
-    call(Game, X, Y, Turn, Ref).            % Call game to make the move
-
-
-changeTurn(white) :- retract(turn(_)), assert(turn(black)).
-changeTurn(black) :- retract(turn(_)), assert(turn(white)).
-
+    drawLine(Display, XX, Y, Width, BoxClickEvent).
 
 selectBox(X, Y, Turn, Box) :-
     assert(selected(X, Y, Box, Turn)),      % Assert selected box
