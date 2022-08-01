@@ -86,10 +86,7 @@ Para utilizar o projeto é necessário estar com o prolog e o Stockfish instalad
 $ cd src/
 
 # Entrando no interpretador do swipl
-$ swipl
-
-# Consultando o arquivo main.pl
-$ [main].
+$ swipl main.pl
 
 # Executando a main
 $ main.
@@ -116,7 +113,7 @@ Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 | [Lucas Gomes Lopes](https://github.com/LucasGlopes/) | Lógica do Cavalo | Excelente |
 | [Lucas Ursulino Boaventura](https://github.com/lboaventura25/) | NÃO PARTICIPOU DO PROJETO | Nula |
 | [Rafael Cleydson da Silva Ramos](https://github.com/RcleydsonR/) | Estrutura e functores iniciais, lógica do peão (3 movimentos básicos) e da rainha. | Excelente |
-| [Thiago Sampaio de Paiva](https://github.com/thiagohdaqw/) |FALTA | Excelente |
+| [Thiago Sampaio de Paiva](https://github.com/thiagohdaqw/) | Menu, Fluxo do Jogo, Socket e Integração | Excelente |
 
 
 ## Outros 
