@@ -100,14 +100,9 @@ $ main.
 ```
 
 ## Vídeo
-Adicione 1 ou mais vídeos com a execução do projeto.
-Procure: 
-(i) Introduzir o projeto;
-(ii) Mostrar passo a passo o código, explicando-o, e deixando claro o que é de terceiros, e o que é contribuição real da equipe;
-(iii) Apresentar particularidades do Paradigma, da Linguagem, e das Tecnologias, e
-(iV) Apresentar lições aprendidas, contribuições, pendências, e ideias para trabalhos futuros.
-OBS: TODOS DEVEM PARTICIPAR, CONFERINDO PONTOS DE VISTA.
-TEMPO: +/- 15min
+https://youtu.be/5cYcJRTK02s
+
+Obs.: Tivemos alguns problemas de conexões dos integrantes, e por esse motivo algumas partes ficaram cortadas.
 
 ## Participações
 Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
