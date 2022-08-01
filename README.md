@@ -143,6 +143,8 @@ Diversas alterações e melhorias ainda podem ser feitas, e a equipe separou alg
 - Integração de novos comandos do Stockfish.
 - Validação própria sem utilizar o Stockfish por trás dos panos.
 - Mostrar caminho possível para peça selecionado pelo jogador.
+- Colocar o algoritimo padrão de movimento no movimento da torre.
+- O jogo fechar o terminal do prolog para recomeçar uma nova partida.
 
 
 ## Fontes
