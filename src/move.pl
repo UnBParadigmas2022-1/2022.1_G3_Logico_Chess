@@ -49,9 +49,7 @@ deparseMove([A,B,C,D], Move) :-
     char_code(Soy, BB),
     char_code(Sdx, CC),
     char_code(Sdy, DD),
-    string_concat(Sox, Soy, Origin),
-    string_concat(Sdx, Sdy, Destiny),
-    string_concat(Origin, Destiny, Move).
+    atomics_to_string([Sox, Soy, Sdx, Sdy], Move).
 
 
 isLetterValid(Letter) :- Letter >= 97, Letter =< 104.       % 'a' <= Letter <= 'h'
