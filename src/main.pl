@@ -5,6 +5,7 @@
 :- consult(socket).
 :- consult(stockfish).
 :- consult(utils).
+:- consult(pieces/king).
 
 :- dynamic(gamemode/1).      % gamemode(mode)
 :- dynamic(turn/1).          % turn(Turn)
@@ -47,7 +48,31 @@ isCheckmate :-
     start_stockfish(Stockfish, Out),
     get_best_move(Stockfish, Out, Fen, 1, [Move|_]),
     Move == 40,
-    format('Checkmate, vitoria do jogador ~a\n', Turn).
+    drawWarning('Xequemate!').
+
+
+moveRook([Sx, Sy, X, Y]) :-
+    Sx < X, !,
+    NewX is X-1,
+    removePiece(NewX, Y),
+    updateBoard([7, Sy, NewX, Y], PRef),
+    movePiece(PRef, NewX, Y).
+moveRook([Sx, Sy, X, Y]) :-
+    Sx > X, !,
+    NewX is X+1,
+    removePiece(NewX, Y),
+    updateBoard([0, Sy, NewX, Y], PRef),
+    movePiece(PRef, NewX, Y).
+
+
+applyCastling(_, [Sx, _, X, Y]) :-
+    board(X, Y, Piece, _, _),
+    (Piece \= king; abs(Sx-X) =\= 2).
+applyCastling(Turn, [Sx, Sy, X, Y]) :-
+    board(X, Y, Piece, _, _),
+    Piece == king, abs(Sx-X) =:= 2,
+    updateCastling(Turn, []),
+    moveRook([Sx, Sy, X, Y]).
 
 
 applyMove(1, [Sx, Sy, X, Y]) :-
@@ -55,6 +80,7 @@ applyMove(1, [Sx, Sy, X, Y]) :-
     updateBoard([Sx, Sy, X, Y], PRef),
     movePiece(PRef, X, Y),
     turn(Turn),
+    applyCastling(Turn, [Sx, Sy, X, Y]),
     changeTurn(Turn).
 applyMove(GameMode, PlayerMove) :-
     (GameMode == 2; GameMode == 3),
