@@ -1,5 +1,4 @@
-:- dynamic enPassantBlack/2.
-:- dynamic enPassantWhite/2.
+:- dynamic enPassant/4.
 
 
 isPawnMoveValid(Turn, Move):-
@@ -61,29 +60,25 @@ verifyEnPassantMove(black, [_, Py, Cx, Cy]) :-
     Py - Cy =:= 2,
     Cy =:= 4,
     increment(Cx, X1, 1), decrement(Cx, X2, 1),
-    assert(enPassantWhite(X1, Cy)),
-    assert(enPassantWhite(X2, Cy)).
+    assert(enPassant(white, X1, Cy, Cx)),
+    assert(enPassant(white, X2, Cy, Cx)).
 verifyEnPassantMove(white, [_, Py, Cx, Cy]) :-
     Cy - Py =:= 2,
     Cy =:= 3,
     increment(Cx, X1, 1), decrement(Cx, X2, 1),
-    assert(enPassantBlack(X1, Cy)),
-    assert(enPassantBlack(X2, Cy)).
+    assert(enPassant(black, X1, Cy, Cx)),
+    assert(enPassant(black, X2, Cy, Cx)).
 verifyEnPassantMove(white, _) :-
-    retractall(enPassantWhite(_, _)).
+    retractall(enPassant(white, _, _, _)).
 verifyEnPassantMove(black, _) :-
-    retractall(enPassantBlack(_, _)).
+    retractall(enPassant(black, _, _, _)).
 
 
 verifyEnPassantAttack(white, [Px, Py, Cx, Cy]) :-
-    enPassantWhite(Px, Py),
-    (Cx =:= Px + 1; Cx =:= Px - 1),
-    (Cy =:= Py + 1),
-    decrement(Cy, Cy1, 1),
-    board(Cx, Cy1, pawn, black, _).
+    enPassant(white, Px, Py, C),
+    (Cx =:= C),
+    (Cy =:= Py + 1).
 verifyEnPassantAttack(black, [Px, Py, Cx, Cy]) :-
-    enPassantBlack(Px, Py),
-    (Cx =:= Px + 1; Cx =:= Px - 1),
-    (Cy =:= Py - 1),
-    increment(Cy, Cy1, 1),
-    board(Cx, Cy1, pawn, white, _).
+    enPassant(black, Px, Py, C),
+    (Cx =:= C),
+    (Cy =:= Py - 1).
