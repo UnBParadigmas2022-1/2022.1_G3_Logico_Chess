@@ -36,6 +36,10 @@ A ideia do projeto é baseada em um projeto de um dos integrantes do grupo e de 
 
 <img src="https://user-images.githubusercontent.com/49499946/182047209-65fea064-f314-4edc-8505-6d47c6f1a5f2.png" width="600" />
 
+* Jogo em execução:
+
+<img src="https://user-images.githubusercontent.com/49499946/182209197-e13eb1b0-a3c1-4cbd-ac9e-5e4355e17ffe.gif" width="600" />
+
 ## Instalação 
 **Linguagem**: [Prolog](https://www.swi-prolog.org/) <br>
 **Tecnologias**: Prolog e [Stockfish](https://stockfishchess.org/)<br>
