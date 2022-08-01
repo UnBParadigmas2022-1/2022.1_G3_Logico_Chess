@@ -29,7 +29,7 @@ A ideia do projeto é baseada em um projeto de um dos integrantes do grupo e de 
 ## Screenshots
 * Menu da Aplicação:
 
-<img src="https://user-images.githubusercontent.com/49499946/182047320-620b487a-1745-49e6-81a2-d3bb20d4cffb.png" width="600" />
+<img src="https://user-images.githubusercontent.com/49499946/182257180-050c9091-b99e-4f60-9a89-52e13344b83f.png" width="600" />
 
 
 * Tela do Jogo:
