@@ -114,7 +114,7 @@ Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 |Nome do Membro | Contribuição | Significância da Contribuição para o Projeto (Excelente/Boa/Regular/Ruim/Nula) |
 | :--: | :--: | :--: |
 | [Antônio Aldísio](https://github.com/AntonioAldisio/) | Lógica da torre e promoção do peão em rainha| Excelente |
-| [Dafne Moretti Moreira](https://github.com/DafneM/) | FALTA | Excelente |
+| [Dafne Moretti Moreira](https://github.com/DafneM/) | Lógica de movimentação do bispo, da rainha e do rei | Excelente |
 | [Igor Queiroz Lima](https://github.com/igorq937/) | FALTA | Excelente |
 | [João Pedro Moura Oliveira](https://github.com/Joao-Moura/) | Integração com o Stockfish, lógica do check, xequemate e roque | Excelente |
 | [Lucas Gomes Lopes](https://github.com/LucasGlopes/) | Lógica do Cavalo | Excelente |
