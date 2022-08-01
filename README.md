@@ -106,7 +106,7 @@ TEMPO: +/- 15min
 Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 |Nome do Membro | Contribuição | Significância da Contribuição para o Projeto (Excelente/Boa/Regular/Ruim/Nula) |
 | :--: | :--: | :--: |
-| [Antônio Aldísio](https://github.com/AntonioAldisio/) | FALTA | Excelente |
+| [Antônio Aldísio](https://github.com/AntonioAldisio/) | Lógica da torre e promoção do peão em rainha| Excelente |
 | [Dafne Moretti Moreira](https://github.com/DafneM/) | FALTA | Excelente |
 | [Igor Queiroz Lima](https://github.com/igorq937/) | FALTA | Excelente |
 | [João Pedro Moura Oliveira](https://github.com/Joao-Moura/) | Integração com o Stockfish, lógica do check, xequemate e roque | Excelente |
@@ -135,6 +135,8 @@ Diversas alterações e melhorias ainda podem ser feitas, e a equipe separou alg
 - Melhor encapsulamento do Stockfish, sem a necessidade de abertura e fechamento a cada execução de um comando.
 - Integração de novos comandos do Stockfish.
 - Validação própria sem utilizar o Stockfish por trás dos panos.
+- Mostrar caminho possível para peça selecionado pelo jogador.
+
 
 ## Fontes
 - Insipirado em: chessGame. Disponível em: <https://gitlab.com/ensino_unb/EDAFGA/2020_1/grupo-1-ai/-/tree/feature/chessGame/src>
