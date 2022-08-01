@@ -1,4 +1,4 @@
-:- dynamic enPassant/4.
+:- dynamic enPassant/4. % enPassant(Color, X, Y, C) C is the column of the pawn that can be captured en passant
 
 
 isPawnMoveValid(Turn, Move):-
@@ -77,8 +77,14 @@ verifyEnPassantMove(black, _) :-
 verifyEnPassantAttack(white, [Px, Py, Cx, Cy]) :-
     enPassant(white, Px, Py, C),
     (Cx =:= C),
-    (Cy =:= Py + 1).
+    (Cy =:= Py + 1),
+    decrement(Cy, Y, 1),
+    removePiece(Cx, Y),
+    removePiece(board(Cx, Y, _, _, _)).
 verifyEnPassantAttack(black, [Px, Py, Cx, Cy]) :-
     enPassant(black, Px, Py, C),
     (Cx =:= C),
-    (Cy =:= Py - 1).
+    (Cy =:= Py - 1),
+    increment(Cy, Y, 1),
+    removePiece(Cx, Y),
+    removePiece(board(Cx, Y, _, _, _)).
