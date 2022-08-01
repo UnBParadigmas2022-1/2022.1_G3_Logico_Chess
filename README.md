@@ -114,9 +114,9 @@ Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 | [Igor Queiroz Lima](https://github.com/igorq937/) | FALTA | Excelente |
 | [João Pedro Moura Oliveira](https://github.com/Joao-Moura/) | Integração com o Stockfish, lógica do check, xequemate e roque | Excelente |
 | [Lucas Gomes Lopes](https://github.com/LucasGlopes/) | Lógica do Cavalo | Excelente |
-| [Lucas Ursulino Boaventura](https://github.com/lboaventura25/) | NÃO PARTICIPOU DO PROJETO | Nula |
+| [Lucas Ursulino Boaventura](https://github.com/lboaventura25/) | Multiplayer Socket | Boa |
 | [Rafael Cleydson da Silva Ramos](https://github.com/RcleydsonR/) | Estrutura e functores iniciais, lógica do peão (3 movimentos básicos) e da rainha. | Excelente |
-| [Thiago Sampaio de Paiva](https://github.com/thiagohdaqw/) | Menu, Fluxo do Jogo, Socket e Integração | Excelente |
+| [Thiago Sampaio de Paiva](https://github.com/thiagohdaqw/) | Menu, Fluxo do Jogo, Multiplayer Socket e Integração | Excelente |
 
 
 ## Outros 
