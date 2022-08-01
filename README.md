@@ -115,7 +115,7 @@ Apresente, brevemente, como cada membro do grupo contribuiu para o projeto.
 | :--: | :--: | :--: |
 | [Antônio Aldísio](https://github.com/AntonioAldisio/) | Lógica da torre e promoção do peão em rainha| Excelente |
 | [Dafne Moretti Moreira](https://github.com/DafneM/) | Lógica de movimentação do bispo, da rainha e do rei | Excelente |
-| [Igor Queiroz Lima](https://github.com/igorq937/) | FALTA | Excelente |
+| [Igor Queiroz Lima](https://github.com/igorq937/) | Interface gráfica e movimento en passant | Excelente |
 | [João Pedro Moura Oliveira](https://github.com/Joao-Moura/) | Integração com o Stockfish, lógica do check, xequemate e roque | Excelente |
 | [Lucas Gomes Lopes](https://github.com/LucasGlopes/) | Lógica do Cavalo | Excelente |
 | [Lucas Ursulino Boaventura](https://github.com/lboaventura25/) | Multiplayer Socket | Boa |
@@ -151,3 +151,5 @@ Diversas alterações e melhorias ainda podem ser feitas, e a equipe separou alg
 - Insipirado em: chessGame. Disponível em: <https://gitlab.com/ensino_unb/EDAFGA/2020_1/grupo-1-ai/-/tree/feature/chessGame/src>
 - Documentação do Prolog. Disponível em: <https://www.swi-prolog.org/>
 - Bramer, M. A. [Logic Programming with Prolog](https://www.amazon.com.br/Logic-Programming-PROLOG-Max-Bramer-dp-144715486X/dp/144715486X/ref=dp_ob_title_bk). New York: Springer, 2013. 
+- XPCE User Guide: https://www.swi-prolog.org/download/xpce/doc/userguide/userguide.pdf
+- Stockfish: https://github.com/zhelyabuzhsky/stockfish
