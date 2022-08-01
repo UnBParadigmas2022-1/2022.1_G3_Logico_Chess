@@ -52,19 +52,19 @@ startGui(Title, BoxClickEvent) :-
     new(@selected, colour(@default, 30840, 30840, 24672)),
     % Create and start the window
     new(Display, window(Title, size(800,800))),
-    drawMenuBar(Display),
+    drawMenuBar(Display, Title),
     drawBoard(Display, BoxClickEvent),
     drawPieces(Display),
     drawInform('Valendo!!!'),
     send(Display, open).
 
 
-drawMenuBar(Display) :-
+drawMenuBar(Display, Title) :-
     new(@orange, colour(orange)),
     new(@red, colour(red)),
     new(@blue, colour(blue)),
     new(@purple, colour(@default, 32767, 0, 65535)),
-    new(Frame, frame('Chess')),
+    new(Frame, frame(Title)),
 		send(Frame, append, new(@menu_bar, dialog('', size(800,60)))),
         send(@menu_bar, display, new(@message, text(''))),
         send(@message, font, font(times, bold, 18)),
