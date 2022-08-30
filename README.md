@@ -40,7 +40,7 @@ A ideia do projeto é baseada em um projeto de um dos integrantes do grupo e de 
 
 <img src="https://user-images.githubusercontent.com/49499946/182209197-e13eb1b0-a3c1-4cbd-ac9e-5e4355e17ffe.gif" width="600" />
 
-## Instalação 
+## Instalação
 **Linguagem**: [Prolog](https://www.swi-prolog.org/) <br>
 **Tecnologias**: Prolog e [Stockfish](https://stockfishchess.org/)<br>
 
@@ -80,6 +80,16 @@ $ make -j build ARCH=x86-64
 
 # Adicione a pasta src no seu $PATH (temporário), pois lá que se encontra o executável
 $ export PATH="$PATH:pasta_do_stockfish/src"
+```
+
+## Docker
+É possivel, também, executar o projeto utilizando o docker com X11Forwarding. Para isso, siga os comandos:
+```
+$ git clone https://github.com/UnBParadigmas2022-1/2022.1_G3_Logico_Chess.git
+$ cd /2022.1_G3_Logico_Chess/
+
+$ make build
+$ make run
 ```
 
 ## Uso 
